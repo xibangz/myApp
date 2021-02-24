@@ -18,6 +18,7 @@ public class ManagementCommand extends Command {
     private OrderTotalService orderTotalServ;
     private CarService carServ;
     private DriverService driverServ;
+    private UserService userServ;
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -34,6 +35,10 @@ public class ManagementCommand extends Command {
                 session.setAttribute("carsList", carServ.findAllCars());
                 page = Path.MANAGE_DRIVERS_CARS_PAGE;
                 break;
+            case "Users":
+                session.setAttribute("usersList",userServ.findAllClients());
+                page=Path.MANAGE_USERS_PAGE;
+                break;
             default:
         }
         return page;
@@ -44,5 +49,6 @@ public class ManagementCommand extends Command {
         orderTotalServ = (OrderTotalService) context.getAttribute("orderTotalServ");
         carServ = (CarService) context.getAttribute("carServ");
         driverServ = (DriverService) context.getAttribute("driverServ");
+        userServ=(UserService)context.getAttribute("userServ");
     }
 }

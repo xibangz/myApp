@@ -18,13 +18,14 @@ public class UserDao {
     private static final String SQL_FIND_ALL_USERS = "select * from `accounts`;";
     private static final String SQL_UPDATE_USER_BLOCKED_BY_ID = "update accounts set is_blocked=? where id=?;";
     private static final String SQL_UPDATE_USER_AMOUNT = "update accounts set amount=? where id=?;";
+    private static final String SQL_FIND_ALL_USERS_CLIENTS = "select * from accounts where role_id=" + USER_CLIENT_ROLE + ";";
     private final DBManager dbManager;
 
     public UserDao() {
         dbManager = DBManager.getInstance();
     }
 
-    public void updateUserAmount(User user){
+    public void updateUserAmount(User user) {
         Connection con = null;
         PreparedStatement prepSt = null;
         try {
@@ -42,7 +43,7 @@ public class UserDao {
         }
     }
 
-    public void updateUserAmount(User user, Connection con){
+    public void updateUserAmount(User user, Connection con) {
         PreparedStatement prepSt = null;
         try {
             prepSt = con.prepareStatement(SQL_UPDATE_USER_AMOUNT);
@@ -122,6 +123,28 @@ public class UserDao {
             con = dbManager.getConnection();
             st = con.createStatement();
             rs = st.executeQuery(SQL_FIND_ALL_USERS);
+            while (rs.next()) {
+                users.add(mapUser(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbManager.close(rs);
+            dbManager.close(st);
+            dbManager.close(con);
+        }
+        return users;
+    }
+
+    public List<User> findAllUsersClients() {
+        List<User> users = new ArrayList<>();
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+        try {
+            con = dbManager.getConnection();
+            st = con.createStatement();
+            rs = st.executeQuery(SQL_FIND_ALL_USERS_CLIENTS);
             while (rs.next()) {
                 users.add(mapUser(rs));
             }

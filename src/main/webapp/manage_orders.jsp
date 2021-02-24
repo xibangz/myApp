@@ -88,6 +88,8 @@
 <input type = "hidden" name="command" value="manageOrders"/>
 </form>
 </c:if>
+
+
 <c:if test="${not empty showPenalty}">
 <h5 class="text-info">Create penalty</h5>
 <form action="controller" method="post">

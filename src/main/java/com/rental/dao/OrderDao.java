@@ -116,7 +116,7 @@ public class OrderDao {
         return sum;
     }
 
-    public List<Order> findOrdersByUserId(User user) {
+    public List<Order> findOrdersByUser(User user) {
         List<Order> orders = new ArrayList<>();
         Connection con = null;
         PreparedStatement prepSt = null;

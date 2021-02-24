@@ -2,6 +2,7 @@ package com.rental.filter;
 
 import com.rental.Path;
 import com.rental.bean.Role;
+import com.rental.bean.User;
 import lombok.extern.log4j.Log4j;
 
 import javax.servlet.*;
@@ -36,8 +37,10 @@ public class CommandAccessFilter implements Filter {
 
     private boolean accessAllowed(ServletRequest request) {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-
-        System.out.println(httpRequest.getSession().getAttribute("userRole"));
+        User user = (User) httpRequest.getSession().getAttribute("user");
+        if (user.isBlocked()) {
+            return false;
+        }
         String commandName = request.getParameter("command");
         if (commandName == null || commandName.isEmpty())
             return false;
@@ -50,7 +53,6 @@ public class CommandAccessFilter implements Filter {
             return false;
 
         Role userRole = (Role) session.getAttribute("userRole");
-        System.out.println(userRole);
         if (userRole == null)
             return false;
 

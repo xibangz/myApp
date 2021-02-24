@@ -22,6 +22,7 @@ public class CommandContainer {
         commands.put("manageOrders", new ManageOrdersCommand());
         commands.put("manageDriversCars", new ManageDriversCarsCommand());
         commands.put("logout", new LogoutCommand());
+        commands.put("manageUsers",new ManageUsersCommand());
     }
 
     public static Command getCommand(String commandName) {

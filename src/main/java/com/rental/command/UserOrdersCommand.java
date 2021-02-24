@@ -77,7 +77,7 @@ public class UserOrdersCommand extends Command {
 
     private List<OrderTotal> getUserTotals(HttpServletRequest req) {
         List<Order> orders =
-                orderServ.findOrdersByUserId((User) req.getSession().getAttribute("user"));
+                orderServ.findOrdersByUser((User) req.getSession().getAttribute("user"));
         orderServ.setCarTotal(orders, carTotalServ);
         return orderTotalServ.findAllUserTotals(orders);
     }

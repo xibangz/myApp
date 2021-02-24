@@ -1,9 +1,5 @@
 
-W
-java:S1128":Remove this unused import 'java.util.concurrent.TimeUnit'.(Æ™ş8ÂÈôû.
-V
-java:S1128	"4Remove this unused import 'java.time.LocalDateTime'.(æÃ§ƒüÿÿÿÿ8™àÀú.
-T
-java:S1128"2Remove this unused import 'com.rental.dao.Fields'.(±’Œüûÿÿÿÿ8ÂÈôû.
+L
+java:S1172"*Remove this unused method parameter "con".(ç­İøÿÿÿÿ8ä‘ªı.
 Q
-java:S1948"/Make "orderTotalDao" transient or serializable.(ÅæÔ…ùÿÿÿÿ8Ãñ˜œı.
+java:S1948"/Make "orderTotalDao" transient or serializable.(ÅæÔ…ùÿÿÿÿ8Ãñ˜œı.

@@ -1,9 +1,7 @@
 
 L
-java:S2696G"6Make the enclosing method "static" or remove this set.(ªÅÙë
-U	java:S106("9Replace this use of System.out or System.err by a logger.(®†èä8¯¾ìı.
-Z	java:S1065"9Replace this use of System.out or System.err by a logger.(…•úúÿÿÿÿ8œåëı.
-Q
-java:S2696K"6Make the enclosing method "static" or remove this set.(íİ‰Ûşÿÿÿÿ
+java:S2696I"6Make the enclosing method "static" or remove this set.(ªÅÙë
 A
-java:S1640"Convert this Map to an EnumMap.(—££¨øÿÿÿÿ8ªŠŞı.
+java:S1640"Convert this Map to an EnumMap.(—££¨øÿÿÿÿ8ªŠŞı.
+Q
+java:S2696M"6Make the enclosing method "static" or remove this set.(íİ‰Ûşÿÿÿÿ

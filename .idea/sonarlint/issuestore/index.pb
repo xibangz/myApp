@@ -31,8 +31,6 @@ a
 1src/main/java/com/rental/service/UserService.java,e\b\ebef117c3c620caf4b3a04839b43d3ea4ef9bdb5
 Z
 *src/main/java/com/rental/dao/OrderDao.java,2\5\250362ad93d68e374fc1d5bbef9e51f93cc51c62
-X
-(src/main/webapp/WEB-INF/jspf/footer.jspf,5\1\51d41bf9f1fd7b8c54f6a1a932da96d25f0a4b05
 V
 &src/main/webapp/WEB-INF/jspf/page.jspf,1\8\183723e0a3175350ac79039b001630c2d0d0a62f
 f
@@ -177,3 +175,11 @@ c
 3src/main/java/com/rental/exception/DbException.java,1\2\120a74d8fa8653316c1c99261758931930196624
 h
 8src/main/java/com/rental/filter/CommandAccessFilter.java,f\d\fd26730de0af24e7b97f532ff8f793c960a2a625
+U
+%src/main/java/resources_en.properties,5\0\50742ee90162c18f5ffc8051787e49ad7baf552a
+U
+%src/main/java/resources_ru.properties,2\c\2cba78b47fbc421b6db97410237ec31b2026c7d5
+h
+8src/main/java/com/rental/command/ManageUsersCommand.java,2\a\2a63b26ab6645d989a2962b581bca282afc89a34
+P
+ src/main/webapp/manage_users.jsp,0\3\0381480137765ab32f957eaa82e16a908706d229

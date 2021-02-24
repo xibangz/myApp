@@ -15,6 +15,8 @@ public class Path {
     public static final String MANAGE_ORDERS_PAGE_REDIRECT = "controller?manage=Orders&command=management";
     public static final String MANAGE_DRIVERS_CARS_PAGE = "manage_drivers_cars.jsp";
     public static final String MANAGE_DRIVERS_CARS_PAGE_REDIRECT = "controller?manage=Drivers%26Cars&command=management";
+    public static final String MANAGE_USERS_PAGE = "manage_users.jsp";
+    public static final String MANAGE_USERS_PAGE_REDIRECT = "controller?manage=Users&command=management";
     public static final String USER_ORDER_CONFIRM = "user_order_confirm.jsp";
     public static final String ADMIN_MAIN_PAGE = "administration.jsp";
     public static final String ADMIN_USERS_PAGE = "admin_users.jsp";

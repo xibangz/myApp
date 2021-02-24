@@ -23,6 +23,24 @@
 <div class="col-md-2 offset-5">
 <button type="submit" class="btn btn-lg btn-success">Sign in</button>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
 <a href="registration.jsp" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Registration</a>
+<br></br>
+<div class="dropright">
+<button class="btn btn-warning btn-sm dropdown-toggle" type="button" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+Locale
+</button>
+<div class="dropdown-menu pre-scrollable" aria-labelledby="dropdownMenu3">
+<div class="text-info">
+</div>
+<div class="form-check form-check-inline">
+  &ensp;<input class="form-check-input" type="checkbox" name="brandFilter" value="en">
+  <label class="form-check-label">en</label>
+</div>
+<div class="form-check form-check-inline">
+  &ensp;<input class="form-check-input" type="checkbox" name="brandFilter" value="ru" >
+  <label class="form-check-label">ru</label>
+</div>
+</div>
+</div>
 </div>
 <input type = "hidden" name="command" value="login"/>
 </form>

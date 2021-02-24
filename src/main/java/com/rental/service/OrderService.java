@@ -17,9 +17,10 @@ public class OrderService implements Serializable {
         orderDao.insertOrder(order);
     }
 
-    public List<Order> findOrdersByUserId(User user) {
-        return orderDao.findOrdersByUserId(user);
+    public List<Order> findOrdersByUser(User user) {
+        return orderDao.findOrdersByUser(user);
     }
+
 
     public Order findOrder(OrderTotal total) {
         return orderDao.findOrderById(total.getOrder().getId());

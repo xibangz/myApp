@@ -17,8 +17,8 @@
       <th scope="col">Rental up to</th>
       <th scope="col">Number of cars</th>
       <th scope="col">Number of drivers</th>
-      <th scope="col">Total sum</th>
       <th scope="col">Order status</th>
+      <th scope="col">Total sum</th>
     </tr>
   </thead>
 

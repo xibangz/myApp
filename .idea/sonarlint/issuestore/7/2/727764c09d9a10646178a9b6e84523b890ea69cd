@@ -1,7 +1,9 @@
 
-q
-java:S2095x"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(Ô¯¸‰şÿÿÿÿ8„™Ş•û.
-p
-java:S3776·"RRefactor this method to reduce its Cognitive Complexity from 34 to the 15 allowed.(¤óòÈ8Ñßíğû.
+S
+java:S1128"1Remove this unused import 'java.io.Serializable'.(èãîÂÿÿÿÿÿ8 Ã¨ı.
 r
-java:S2095ç"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(‘Ç÷äşÿÿÿÿ8„™Ş•û.
+java:S2095á"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(‘Ç÷äşÿÿÿÿ8„™Ş•û.
+p
+java:S3776±"RRefactor this method to reduce its Cognitive Complexity from 34 to the 15 allowed.(¤óòÈ8Ñßíğû.
+q
+java:S2095w"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(Ô¯¸‰şÿÿÿÿ8„™Ş•û.

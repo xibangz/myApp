@@ -15,6 +15,9 @@ public class UserService implements Serializable {
     public User findUserByLogin(String login) {
         return userDao.findUserByLogin(login);
     }
+    public List<User> findAllClients(){
+        return userDao.findAllUsersClients();
+    }
 
     public void insertUser(User user) {
         userDao.insertUser(user);

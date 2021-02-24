@@ -46,7 +46,7 @@
     </init-param>
     <init-param>
       <param-name>manager</param-name>
-      <param-value>management manageOrders manageDriversCars</param-value>
+      <param-value>management manageOrders manageDriversCars manageUsers</param-value>
     </init-param>
     <init-param>
       <param-name>common</param-name>
