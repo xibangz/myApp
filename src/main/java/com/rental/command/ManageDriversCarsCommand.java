@@ -3,6 +3,7 @@ package com.rental.command;
 import com.rental.Path;
 import com.rental.bean.Car;
 import com.rental.bean.Driver;
+import com.rental.dao.DBManager;
 import com.rental.service.*;
 
 import javax.servlet.ServletContext;
@@ -10,6 +11,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 public class ManageDriversCarsCommand extends Command {
@@ -43,8 +46,7 @@ public class ManageDriversCarsCommand extends Command {
             List<Car> list = (List<Car>) req.getSession().getAttribute("carsList");
             Car car = list.get(index);
             car.setOk(true);
-            carServ.updateCarOk(car);
-            carTotalServ.updateQuantity(car.getCarTotal(), true);
+            updateCarTransaction(car);
         }
     }
 
@@ -54,8 +56,21 @@ public class ManageDriversCarsCommand extends Command {
             List<Car> list = (List<Car>) req.getSession().getAttribute("carsList");
             Car car = list.get(index);
             car.setOk(false);
-            carServ.updateCarOk(car);
-            carTotalServ.updateQuantity(car.getCarTotal(), false);
+            updateCarTransaction(car);
+        }
+    }
+
+    private void updateCarTransaction(Car car) {
+        Connection con = null;
+        try {
+            con= DBManager.getInstance().startTransaction();
+            carServ.updateCarOk(car,con);
+            carTotalServ.updateQuantity(car.getCarTotal(), car.isOk(),con);
+            DBManager.getInstance().commitTransaction(con);
+        } catch (SQLException e) {
+            DBManager.getInstance().rollbackTransaction(con);
+        }finally {
+            DBManager.getInstance().close(con);
         }
     }
 

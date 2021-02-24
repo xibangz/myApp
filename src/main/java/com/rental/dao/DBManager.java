@@ -33,25 +33,26 @@ public class DBManager {
         return con;
     }
 
-    public void commitAndClose(Connection con) {
-        if (con != null) {
-            try {
-                con.commit();
-                con.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
+    public Connection startTransaction() throws SQLException {
+        Connection con = getInstance().getConnection();
+        con.setAutoCommit(false);
+        con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+        return con;
+    }
+
+    public void commitTransaction(Connection con) {
+        try {
+            con.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
-    public void rollbackAndClose(Connection con) {
-        if (con != null) {
-            try {
-                con.rollback();
-                con.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
+    public void rollbackTransaction(Connection con) {
+        try {
+            con.rollback();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

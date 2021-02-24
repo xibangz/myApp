@@ -27,8 +27,9 @@
       <td>${item.name}</td>
       <td>${item.price}</td>
       <td>${item.quantity}</td>
-      <td><div class="offset-1"><button type="submit" name="showUpdate" class="btn btn-md btn-primary sm-1 text-white" value="${k}">Update</button></div></td>
-      <td><div class="offset-1"><button type="submit" name="deleteDriverCat" class="btn btn-md btn-danger sm-1 text-white" value="${item.id}">Delete</button></div></td>
+      <td><button type="submit" name="showUpdate" class="btn btn-md btn-primary sm-1 text-white" value="${k}">Update</button>
+      <button type="submit" name="deleteDriverCat" class="btn btn-md btn-danger sm-1 text-white" value="${item.id}">Delete</button>
+      <button type="submit" name="showAddDriver" class="btn btn-md btn-info sm-1 text-white" value="${k}">Add driver</button></td>
       <c:set var="k" value="${k+1}"/>
     </tr>
     </c:forEach>
@@ -109,9 +110,8 @@
 
 
 
-
+<c:if test="${updateAddDriver!=null}">
 <div class="col-md-1">
-
 <h5 class="text-info">Add driver</h5>
 <form action="controller" method="post">
 <div class="text-info">
@@ -125,12 +125,12 @@
 <div class="text-info">
 <h7>&ensp;Driver cat.</h7>
 </div>
-<input name="driverCat" type="text" class="text-success font-weight-bold" size="10" required/><br></br>
+<input name="driverCat" type="text" class="text-success font-weight-bold" size="10" readonly value="${updateAddDriver.name}"/><br></br>
 <div class="offset-4"><button id="1" type="submit" name="addDriver" class="btn btn-md btn-success sm-1 text-white" value="true">Add</button></div>
 <input type = "hidden" name="command" value="adminDrivers"/>
 </form>
 </div>
-
+</c:if>
 
 
 

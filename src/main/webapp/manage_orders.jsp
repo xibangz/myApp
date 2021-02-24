@@ -60,9 +60,61 @@
 </form>
 </div>
 
+<div class="col-md-2">
+<c:if test="${not empty updateReject}">
+<h5 class="text-info">Update category</h5>
+<form action="controller" method="post">
+<div class="text-info">
+<h7>&ensp;ID</h7>
+</div>
+<input name="orderTotalId" type="text" class="text-danger font-weight-bold" size="30" readonly value="${updateReject.id}"/>
+<div class="text-info">
+<h7>&ensp;Order date</h7>
+</div>
+<input name="orderTotalDate" type="text" class="text-danger font-weight-bold" size="30" readonly value="${updateReject.orderDate}"/>
+<div class="text-info">
+<h7>&ensp;Order sum</h7>
+</div>
+<input name="orderTotalSum" type="text" class="text-danger font-weight-bold" size="30" readonly value="${updateReject.sum}"/>
+<div class="text-info">
+<h7>&ensp;Penalty</h7>
+</div>
+<input name="orderTotalPenalty" type="text" class="text-danger font-weight-bold" size="30" readonly value="${updateReject.penalty}"/>
+<div class="text-info">
+<h7>&ensp;Description</h7>
+</div>
+<input name="orderTotalDesc" type="text" class="text-danger font-weight-bold" size="30" required value="${updateReject.description}"/><br></br>
+<button type="submit" name="rejectStatus" class="btn btn-md btn-success sm-1 text-white" value="${updateReject.id}">Confirm</button>
+<input type = "hidden" name="command" value="manageOrders"/>
+</form>
+</c:if>
+<c:if test="${not empty showPenalty}">
+<h5 class="text-info">Create penalty</h5>
+<form action="controller" method="post">
+<div class="text-info">
+<h7>&ensp;Order ID</h7>
+</div>
+<input name="orderId" type="text" class="text-danger font-weight-bold" size="30" readonly value="${updateItem.order.id}"/>
+<div class="text-info">
+<h7>&ensp;Penalty sum</h7>
+</div>
+<input name="orderPenaltySum" type="text" class="text-danger font-weight-bold" size="30" required />
+<div class="text-info">
+<h7>&ensp;Description</h7>
+</div>
+<input name="orderPenaltyDesc" type="text" class="text-danger font-weight-bold" size="30" required /><br></br>
+<button type="submit" name="addPenalty" class="btn btn-md btn-success sm-1 text-white" value="${updateItem.order.id}">Confirm</button>
+<input type = "hidden" name="command" value="manageOrders"/>
+</form>
+</c:if>
+
+
+
+</div>
+
 
 <c:if test="${not empty updateItem}">
-<div class="col-md-7">
+<div class="col-md-5">
 <form action="controller" method="post">
 <table class="table table-hover">
   <thead>
@@ -94,63 +146,6 @@
 </form>
 </div>
 </c:if>
-
-
-</div>
-<div class="row">
-<div class="col offset-5">
-<c:if test="${not empty updateReject}">
-<h5 class="text-info">Update category</h5>
-<form action="controller" method="post">
-<div class="text-info">
-<h7>&ensp;ID</h7>
-</div>
-<input name="orderTotalId" type="text" class="text-danger font-weight-bold" size="30" readonly value="${updateReject.id}"/>
-<div class="text-info">
-<h7>&ensp;Order date</h7>
-</div>
-<input name="orderTotalDate" type="text" class="text-danger font-weight-bold" size="30" readonly value="${updateReject.orderDate}"/>
-<div class="text-info">
-<h7>&ensp;Order sum</h7>
-</div>
-<input name="orderTotalSum" type="text" class="text-danger font-weight-bold" size="30" readonly value="${updateReject.sum}"/>
-<div class="text-info">
-<h7>&ensp;Penalty</h7>
-</div>
-<input name="orderTotalPenalty" type="text" class="text-danger font-weight-bold" size="30" readonly value="${updateReject.penalty}"/>
-<div class="text-info">
-<h7>&ensp;Description</h7>
-</div>
-<input name="orderTotalDesc" type="text" class="text-danger font-weight-bold" size="30" required value="${updateReject.description}"/><br></br>
-<button type="submit" name="rejectStatus" class="btn btn-md btn-success sm-1 text-white" value="${updateReject.id}">Confirm</button>
-<input type = "hidden" name="command" value="manageOrders"/>
-</form>
-</c:if>
-</div>
-
-
-<div class="col">
-<c:if test="${not empty showPenalty}">
-<h5 class="text-info">Create penalty</h5>
-<form action="controller" method="post">
-<div class="text-info">
-<h7>&ensp;Order ID</h7>
-</div>
-<input name="orderId" type="text" class="text-danger font-weight-bold" size="30" readonly value="${updateItem.order.id}"/>
-<div class="text-info">
-<h7>&ensp;Penalty sum</h7>
-</div>
-<input name="orderPenaltySum" type="text" class="text-danger font-weight-bold" size="30" required />
-<div class="text-info">
-<h7>&ensp;Description</h7>
-</div>
-<input name="orderPenaltyDesc" type="text" class="text-danger font-weight-bold" size="30" required /><br></br>
-<button type="submit" name="addPenalty" class="btn btn-md btn-success sm-1 text-white" value="${updateItem.order.id}">Confirm</button>
-<input type = "hidden" name="command" value="manageOrders"/>
-</form>
-</c:if>
-</div>
-
 
 </div>
 </div>

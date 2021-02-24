@@ -27,17 +27,17 @@ public class AdministrationCommand extends Command {
 
         switch (req.getParameter("admin")) {
             case "Cars":
-                session.setAttribute("carTotalsList", new CarTotalService().findAllCars());
-                session.setAttribute("carsList", new CarService().findAllCars());
+                session.setAttribute("carTotalsList", carTotalServ.findAllCars());
+                session.setAttribute("carsList", carServ.findAllCars());
                 page = Path.ADMIN_CARS_PAGE;
                 break;
             case "Users":
-                session.setAttribute("usersList", new UserService().findAllUsers());
+                session.setAttribute("usersList", userServ.findAllUsers());
                 page = Path.ADMIN_USERS_PAGE;
                 break;
             case "Drivers":
-                session.setAttribute("driversList", new DriverService().findAllDrivers());
-                session.setAttribute("driverCatsList", new DriverCategoryService().findAllDriverCats());
+                session.setAttribute("driversList", driverServ.findAllDrivers());
+                session.setAttribute("driverCatsList", driverCatServ.findAllDriverCats());
                 page = Path.ADMIN_DRIVERS_PAGE;
                 break;
             default:

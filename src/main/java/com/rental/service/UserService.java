@@ -5,6 +5,7 @@ import com.rental.bean.User;
 import com.rental.dao.UserDao;
 
 import java.io.Serializable;
+import java.sql.Connection;
 import java.util.List;
 
 public class UserService implements Serializable {
@@ -15,8 +16,8 @@ public class UserService implements Serializable {
         return userDao.findUserByLogin(login);
     }
 
-    public boolean insertUser(User user) {
-        return userDao.insertUser(user);
+    public void insertUser(User user) {
+        userDao.insertUser(user);
     }
 
     public User findUser(Order order) {
@@ -33,5 +34,9 @@ public class UserService implements Serializable {
 
     public void updateUserBlocked(User user) {
         userDao.updateUserBlockedById(user);
+    }
+
+    public void updateUserAmount(User user, Connection con) {
+        userDao.updateUserAmount(user,con);
     }
 }

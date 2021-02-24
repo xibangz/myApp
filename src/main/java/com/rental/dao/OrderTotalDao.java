@@ -37,7 +37,7 @@ public class OrderTotalDao {
         }
     }
 
-    private void insertOrderTotal(Connection con, OrderTotal total) throws SQLException {
+    public void insertOrderTotal(Connection con, OrderTotal total) throws SQLException {
         PreparedStatement prepSt = con.prepareStatement(SQL_INSERT_ORDER_TOTAL, Statement.RETURN_GENERATED_KEYS);
         int z = 1;
         prepSt.setInt(z++, total.getSum());

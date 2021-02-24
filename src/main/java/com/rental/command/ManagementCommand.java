@@ -1,19 +1,15 @@
 package com.rental.command;
 
 import com.rental.Path;
-import com.rental.bean.Order;
-import com.rental.bean.OrderTotal;
-import com.rental.bean.User;
+
 import com.rental.service.*;
-
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
+
 
 
 public class ManagementCommand extends Command {

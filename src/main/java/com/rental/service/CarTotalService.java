@@ -5,6 +5,7 @@ import com.rental.bean.ProductPageContent;
 import com.rental.dao.CarTotalDao;
 
 import java.io.Serializable;
+import java.sql.Connection;
 import java.util.*;
 
 public class CarTotalService implements Serializable {
@@ -12,20 +13,20 @@ public class CarTotalService implements Serializable {
     private final CarTotalDao carTotalDao = new CarTotalDao();
     private final DriverCategoryService driverCatService = new DriverCategoryService();
 
-    public boolean insertCarTotal(CarTotal total) {
-        return carTotalDao.insertCarTotal(total);
+    public void insertCarTotal(CarTotal total) {
+         carTotalDao.insertCarTotal(total);
     }
 
-    public boolean deleteCarTotal(int id) {
-        return carTotalDao.deleteCarTotal(id);
+    public void deleteCarTotal(int id) {
+         carTotalDao.deleteCarTotal(id);
     }
 
-    public boolean updateCarTotal(CarTotal total) {
-        return carTotalDao.updateCarTotal(total);
+    public void updateCarTotal(CarTotal total) {
+         carTotalDao.updateCarTotal(total);
     }
 
-    public void updateQuantity(int id, boolean positiveNumb) {
-        carTotalDao.updateQuantity(id, positiveNumb);
+    public void updateQuantity(int id, boolean positiveNumb, Connection con) {
+        carTotalDao.updateQuantity(id, positiveNumb,con);
     }
 
     public List<CarTotal> findAllCars() {
@@ -58,13 +59,5 @@ public class CarTotalService implements Serializable {
             carTotal.setDriverCat(driverCatService.findDriverCatById(id));
         }
         return list;
-    }
-
-    public Map<Integer, CarTotal> getCarTotalMap(List<CarTotal> list) {
-        Map<Integer, CarTotal> map = new TreeMap<>();
-        for (CarTotal total : list) {
-            map.put(total.getId(), total);
-        }
-        return map;
     }
 }

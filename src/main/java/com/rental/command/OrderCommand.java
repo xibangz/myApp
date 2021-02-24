@@ -2,6 +2,7 @@ package com.rental.command;
 
 import com.rental.Path;
 import com.rental.bean.*;
+import com.rental.dao.DBManager;
 import com.rental.dao.Fields;
 import com.rental.service.*;
 
@@ -11,7 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.concurrent.TimeUnit;
 
@@ -77,9 +80,18 @@ public class OrderCommand extends Command {
     }
 
     private void insertTotal(OrderTotal total, HttpSession session) {
-        orderServ.insertOrder(total.getOrder());
-        orderTotalServ.insertOrderTotal(total);
-        sessionRemove(session);
+        Connection con = null;
+        try {
+            con= DBManager.getInstance().startTransaction();
+            orderServ.insertOrder(total.getOrder(),con);
+            orderTotalServ.insertOrderTotal(con,total);
+            DBManager.getInstance().commitTransaction(con);
+        } catch (SQLException e) {
+            DBManager.getInstance().rollbackTransaction(con);
+        }finally {
+            sessionRemove(session);
+            DBManager.getInstance().close(con);
+        }
     }
 
     private Order createNewOrder(HttpServletRequest req, OrderPageInfoContent content) {

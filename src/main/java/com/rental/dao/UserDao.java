@@ -17,22 +17,53 @@ public class UserDao {
     private static final String SQL_UPDATE_USER_PASSPORT_BY_ID = "update `accounts` set passport=? where id=?;";
     private static final String SQL_FIND_ALL_USERS = "select * from `accounts`;";
     private static final String SQL_UPDATE_USER_BLOCKED_BY_ID = "update accounts set is_blocked=? where id=?;";
+    private static final String SQL_UPDATE_USER_AMOUNT = "update accounts set amount=? where id=?;";
     private final DBManager dbManager;
 
     public UserDao() {
         dbManager = DBManager.getInstance();
     }
 
+    public void updateUserAmount(User user){
+        Connection con = null;
+        PreparedStatement prepSt = null;
+        try {
+            con = dbManager.getConnection();
+            prepSt = con.prepareStatement(SQL_UPDATE_USER_AMOUNT);
+            int z = 1;
+            prepSt.setInt(z++, user.getAmount());
+            prepSt.setInt(z, user.getId());
+            prepSt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbManager.close(prepSt);
+            dbManager.close(con);
+        }
+    }
 
-    public boolean insertUser(User user) {
+    public void updateUserAmount(User user, Connection con){
+        PreparedStatement prepSt = null;
+        try {
+            prepSt = con.prepareStatement(SQL_UPDATE_USER_AMOUNT);
+            int z = 1;
+            prepSt.setInt(z++, user.getAmount());
+            prepSt.setInt(z, user.getId());
+            prepSt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbManager.close(prepSt);
+        }
+    }
+
+    public void insertUser(User user) {
         Connection con = null;
         try {
             con = dbManager.getConnection();
             insertUser(con, user);
-            return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         } finally {
             dbManager.close(con);
         }

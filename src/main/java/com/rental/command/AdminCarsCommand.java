@@ -3,6 +3,7 @@ package com.rental.command;
 import com.rental.Path;
 import com.rental.bean.Car;
 import com.rental.bean.CarTotal;
+import com.rental.dao.DBManager;
 import com.rental.service.*;
 
 import javax.servlet.ServletContext;
@@ -10,6 +11,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 public class AdminCarsCommand extends Command {
@@ -26,6 +29,7 @@ public class AdminCarsCommand extends Command {
 
 
         showUpdateItem(req.getParameter("showUpdate"), req);
+        showAddCar(req.getParameter("showAddCar"),req);
         addCarTotal(req.getParameter("addCarTotal"), req);
         addCar(req.getParameter("addCar"), req);
         updateCarTotal(req.getParameter("updateCarTotal"), req);
@@ -40,6 +44,14 @@ public class AdminCarsCommand extends Command {
         driverCatServ = (DriverCategoryService) context.getAttribute("driverCatServ");
         carTotalServ = (CarTotalService) context.getAttribute("carTotalServ");
         carServ = (CarService) context.getAttribute("carServ");
+    }
+
+    private void showAddCar(String value, HttpServletRequest req){
+        if(value!= null && !value.isEmpty()){
+            int index = Integer.parseInt(value);
+            List<CarTotal> list = (List<CarTotal>) req.getSession().getAttribute("carTotalsList");
+            req.getSession().setAttribute("updateAddCar", list.get(index));
+        }
     }
 
     private void showUpdateItem(String value, HttpServletRequest req) {
@@ -71,8 +83,21 @@ public class AdminCarsCommand extends Command {
             car.setModel(req.getParameter("carModel"));
             car.setNumbers(req.getParameter("carNumbers"));
             car.setCarTotal(Integer.parseInt(req.getParameter("carTotalId")));
-            carServ.insertCar(car);
-            carTotalServ.updateQuantity(car.getCarTotal(), true);
+            insertCarTransaction(car,true);
+        }
+    }
+
+    private void insertCarTransaction(Car car, boolean value){
+        Connection con=null;
+        try {
+            con= DBManager.getInstance().getConnection();
+            carServ.insertCar(car,con);
+            carTotalServ.updateQuantity(car.getCarTotal(), value,con);
+            DBManager.getInstance().commitTransaction(con);
+        } catch (SQLException e) {
+            DBManager.getInstance().rollbackTransaction(con);
+        }finally {
+            DBManager.getInstance().close(con);
         }
     }
 
@@ -85,9 +110,22 @@ public class AdminCarsCommand extends Command {
     private void deleteCar(String value) {
         if (value != null && !value.isEmpty()) {
             int id = Integer.parseInt(value);
+            updateCarTransaction(id,false);
+        }
+    }
+
+    private void updateCarTransaction(int id,boolean value){
+        Connection con=null;
+        try {
+            con= DBManager.getInstance().getConnection();
             int carTotalId = carServ.findCarTotalId(id);
-            carServ.deleteCar(id);
-            carTotalServ.updateQuantity(carTotalId, false);
+            carServ.deleteCar(id,con);
+            carTotalServ.updateQuantity(carTotalId, value,con);
+            DBManager.getInstance().commitTransaction(con);
+        } catch (SQLException e) {
+            DBManager.getInstance().rollbackTransaction(con);
+        }finally {
+            DBManager.getInstance().close(con);
         }
     }
 

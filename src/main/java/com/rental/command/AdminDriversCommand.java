@@ -23,6 +23,7 @@ public class AdminDriversCommand extends Command {
         initServices(req);
 
         showUpdateItem(req.getParameter("showUpdate"), req);
+        showAddDriver(req.getParameter("showAddDriver"),req);
         addDriver(req.getParameter("addDriver"), req);
         deleteDriver(req.getParameter("deleteDriver"));
         insertDriverCat(req.getParameter("addDriverCat"), req);
@@ -36,6 +37,14 @@ public class AdminDriversCommand extends Command {
         ServletContext context = req.getServletContext();
         driverCatServ = (DriverCategoryService) context.getAttribute("driverCatServ");
         driverServ = (DriverService) context.getAttribute("driverServ");
+    }
+
+    private void showAddDriver(String value,HttpServletRequest req){
+        if(value!=null&&!value.isEmpty()){
+            int index = Integer.parseInt(value);
+            List<DriverCategory> list = (List<DriverCategory>) req.getSession().getAttribute("driverCatsList");
+            req.getSession().setAttribute("updateAddDriver", list.get(index));
+        }
     }
 
     private void showUpdateItem(String value, HttpServletRequest req) {

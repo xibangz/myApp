@@ -5,6 +5,7 @@ import com.rental.bean.CarTotal;
 import com.rental.bean.DriverCategory;
 import com.rental.bean.ProductPageContent;
 
+import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -102,15 +103,13 @@ public class CarTotalDao {
     }
 
 
-    public boolean insertCarTotal(CarTotal car) {
+    public void insertCarTotal(CarTotal car) {
         Connection con = null;
         try {
             con = dbManager.getConnection();
             insertCarTotal(con, car);
-            return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         } finally {
             dbManager.close(con);
         }
@@ -138,11 +137,9 @@ public class CarTotalDao {
         rs.close();
     }
 
-    public void updateQuantity(int id, boolean positiveNumb) {
-        Connection con = null;
+    public void updateQuantity(int id, boolean positiveNumb,Connection con) {
         PreparedStatement prepSt = null;
         try {
-            con = dbManager.getConnection();
             prepSt = positiveNumb
                     ? con.prepareStatement(SQL_UPDATE_QUANTITY_ADD)
                     : con.prepareStatement(SQL_UPDATE_QUANTITY_SUBTRACT);
@@ -152,7 +149,6 @@ public class CarTotalDao {
             e.printStackTrace();
         } finally {
             dbManager.close(prepSt);
-            dbManager.close(con);
         }
     }
 
@@ -213,15 +209,13 @@ public class CarTotalDao {
         return car;
     }
 
-    public boolean updateCarTotal(CarTotal car) {
+    public void updateCarTotal(CarTotal car) {
         Connection con = null;
         try {
             con = dbManager.getConnection();
             updateCarTotal(con, car);
-            return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         } finally {
             dbManager.close(con);
         }

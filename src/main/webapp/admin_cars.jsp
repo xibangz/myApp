@@ -8,7 +8,7 @@
 <div class="container-fluid">
 <div class="row">
 <div class="col-md-5">
-<form action="controller" method="get">
+<form action="controller" method="post">
 <table class="table table-hover">
   <thead>
     <tr>
@@ -30,8 +30,9 @@
       <td>${item.price}</td>
       <td>${item.quantity}</td>
       <td>${item.driverCat.name}</td>
-      <td><div class="offset-1"><button type="submit" name="showUpdate" class="btn btn-md btn-primary sm-1 text-white" value="${k}">Update</button></div></td>
-      <td><div class="offset-1"><button type="submit" name="deleteCarTotal" class="btn btn-md btn-danger sm-1 text-white" value="${item.id}">Delete</button></div></td>
+      <td><button type="submit" name="showUpdate" class="btn btn-md btn-primary sm-1 text-white" value="${k}">Update</button>
+      <button type="submit" name="deleteCarTotal" class="btn btn-md btn-danger sm-1 text-white" value="${item.id}">Delete</button>
+      <button type="submit" name="showAddCar" class="btn btn-md btn-info sm-1 text-white" value="${k}">Add car</button></td>
       <c:set var="k" value="${k+1}"/>
     </tr>
     </c:forEach>
@@ -138,19 +139,18 @@
 </form>
 </div>
 
-
+<c:if test="${updateAddCar!=null}">
 <div class="col-md-1">
-
 <h5 class="text-info">Add car</h5>
 <form action="controller" method="post">
 <div class="text-info">
 <h7>&ensp;Brand</h7>
 </div>
-<input name="carBrand" type="text" class="text-success font-weight-bold" size="10" required/>
+<input name="carBrand" type="text" class="text-success font-weight-bold" size="10" readonly value="${updateAddCar.brand}"/>
 <div class="text-info">
 <h7>&ensp;Model</h7>
 </div>
-<input name="carModel" type="text" class="text-success font-weight-bold" size="10" required/>
+<input name="carModel" type="text" class="text-success font-weight-bold" size="10" readonly value="${updateAddCar.model}"/>
 <div class="text-info">
 <h7>&ensp;Numbers</h7>
 </div>
@@ -158,12 +158,12 @@
 <div class="text-info">
 <h7>&ensp;Total ID</h7>
 </div>
-<input name="carTotalId" type="text" class="text-success font-weight-bold" size="10" required/><br></br>
+<input name="carTotalId" type="text" class="text-success font-weight-bold" size="10" readonly value="${updateAddCar.id}"/><br></br>
 <div class="offset-4"><button type="submit" name="addCar" class="btn btn-md btn-success sm-1 text-white" value="true">Add</button></div>
 <input type = "hidden" name="command" value="adminCars"/>
 </form>
 </div>
-
+</c:if>
 
 
 

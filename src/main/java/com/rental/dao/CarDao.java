@@ -22,11 +22,9 @@ public class CarDao {
         dbManager = DBManager.getInstance();
     }
 
-    public void updateCarOk(Car car) {
-        Connection con = null;
+    public void updateCarOk(Car car, Connection con) {
         PreparedStatement prepSt = null;
         try {
-            con = dbManager.getConnection();
             prepSt = con.prepareStatement(SQL_UPDATE_CAR_OK);
             int z = 1;
             prepSt.setBoolean(z++, car.isOk());
@@ -36,7 +34,6 @@ public class CarDao {
             e.printStackTrace();
         } finally {
             dbManager.close(prepSt);
-
         }
     }
 
@@ -62,15 +59,13 @@ public class CarDao {
         return cars;
     }
 
-    public boolean insertCar(Car car) {
+    public void insertCar(Car car) {
         Connection con = null;
         try {
             con = dbManager.getConnection();
             insertCar(con, car);
-            return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         } finally {
             dbManager.close(con);
         }
@@ -97,21 +92,16 @@ public class CarDao {
         rs.close();
     }
 
-    public boolean deleteCar(int id) {
-        Connection con = null;
+    public void deleteCar(int id,Connection con) {
         PreparedStatement prepSt = null;
         try {
-            con = dbManager.getConnection();
             prepSt = con.prepareStatement(SQL_DELETE_CAR);
             prepSt.setInt(1, id);
             prepSt.executeUpdate();
-            return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         } finally {
             dbManager.close(prepSt);
-            dbManager.close(con);
         }
     }
 

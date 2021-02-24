@@ -1,6 +1,5 @@
 package com.rental.bean;
 
-import com.rental.dao.Fields;
 import lombok.Getter;
 import lombok.Setter;
 
