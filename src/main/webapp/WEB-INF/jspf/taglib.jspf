@@ -1,0 +1,9 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="/WEB-INF/tld/cardeploy.tld" prefix="car"%>
+<%@ taglib uri="/WEB-INF/tld/carphoto.tld" prefix="car_ph"%>
+<%@ taglib uri="/WEB-INF/tld/cardescription.tld" prefix="car_desc"%>
+<%@ taglib uri="/WEB-INF/tld/carname.tld" prefix="car_name"%>
+<%@ taglib uri="/WEB-INF/tld/carprice.tld" prefix="car_price"%>
+<%@ taglib uri="/WEB-INF/tld/paginationtag.tld" prefix="pagination"%>
