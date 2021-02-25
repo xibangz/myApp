@@ -3,6 +3,7 @@ package com.rental.command;
 import com.rental.Path;
 import com.rental.bean.DriverCategory;
 import com.rental.bean.ProductPageContent;
+import com.rental.exception.DBException;
 import com.rental.service.*;
 
 import static com.rental.WebPageConstants.*;
@@ -26,10 +27,15 @@ public class CarsListCommand extends Command {
         HttpSession session = req.getSession();
         initServices(req);
         ProductPageContent content = (ProductPageContent) session.getAttribute("pageContent");
-        if (content == null || req.getParameter("refresh") != null) {
-            content = createDefaultWebPageContent();
-        } else {
-            updateWebPageContent(req, content);
+        try {
+            if (content == null || req.getParameter("refresh") != null) {
+                content = createDefaultWebPageContent();
+            } else {
+                updateWebPageContent(req, content);
+            }
+        }catch (DBException e){
+            session.setAttribute("errorMessage",e.getMessage());
+            return Path.ERROR_PAGE;
         }
         session.setAttribute("pageContent", content);
         return Path.CARS_LIST_PAGE;
@@ -41,7 +47,7 @@ public class CarsListCommand extends Command {
         carTotalServ = (CarTotalService) context.getAttribute("carTotalServ");
     }
 
-    private ProductPageContent createDefaultWebPageContent() {
+    private ProductPageContent createDefaultWebPageContent() throws DBException {
         ProductPageContent content = new ProductPageContent();
         content.setPageId(DEFAULT_PAGE_ID);
         content.setProductsPerPage(DEFAULT_PROD_PER_PAGE);
@@ -57,7 +63,7 @@ public class CarsListCommand extends Command {
         return content;
     }
 
-    private void updateWebPageContent(HttpServletRequest req, ProductPageContent content) {
+    private void updateWebPageContent(HttpServletRequest req, ProductPageContent content) throws DBException {
         String pageIdValue = req.getParameter("pageId");
         String prodPerPageValue = req.getParameter("productsPerPage");
         String sortValue = req.getParameter("sort");
@@ -77,19 +83,19 @@ public class CarsListCommand extends Command {
     }
 
 
-    private void priceFromCheck(String value, ProductPageContent content) {
+    private void priceFromCheck(String value, ProductPageContent content) throws DBException {
         if (value != null && !value.isEmpty() && !content.getPriceFromFilter().toString().equals(value)) {
             content.setPriceFromFilter(priceCheck(value));
         }
     }
 
-    private void priceToCheck(String value, ProductPageContent content) {
+    private void priceToCheck(String value, ProductPageContent content) throws DBException {
         if (value != null && !value.isEmpty() && !content.getPriceToFilter().toString().equals(value)) {
             content.setPriceToFilter(priceCheck(value));
         }
     }
 
-    private Integer priceCheck(String value) {
+    private Integer priceCheck(String value) throws DBException {
         int price = Integer.parseInt(value);
         int maxPrice = new CarTotalService().findMaxPrice();
         if (price > maxPrice || price < 0) {

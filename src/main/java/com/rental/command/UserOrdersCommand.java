@@ -6,6 +6,7 @@ import com.rental.bean.OrderTotal;
 import com.rental.bean.User;
 import com.rental.dao.DBManager;
 import com.rental.dao.Fields;
+import com.rental.exception.DBException;
 import com.rental.service.CarTotalService;
 import com.rental.service.OrderService;
 import com.rental.service.OrderTotalService;
@@ -31,15 +32,20 @@ public class UserOrdersCommand extends Command {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         initServices(req);
-        req.getSession().setAttribute("orderTotalList", getUserTotals(req));
-        if (checkStatus(req.getParameter("status"), req)) {
-            return Path.USER_ORDERS_PAGE_REDIRECT;
+        try {
+            req.getSession().setAttribute("orderTotalList", getUserTotals(req));
+            if (checkStatus(req.getParameter("status"), req)) {
+                return Path.USER_ORDERS_PAGE_REDIRECT;
+            }
+        }catch (DBException e){
+            req.getSession().setAttribute("errorMessage",e.getMessage());
+            return Path.ERROR_PAGE;
         }
 
         return Path.USER_ORDERS_PAGE;
     }
 
-    private boolean checkStatus(String value, HttpServletRequest req) {
+    private boolean checkStatus(String value, HttpServletRequest req) throws DBException {
         if (value != null && !value.isEmpty()) {
             int index = Integer.parseInt(value);
             List<OrderTotal> list = (List<OrderTotal>) req.getSession().getAttribute("orderTotalList");
@@ -55,7 +61,7 @@ public class UserOrdersCommand extends Command {
         return false;
     }
 
-    private void updateTotalAndUserTransaction(OrderTotal total,HttpServletRequest req){
+    private void updateTotalAndUserTransaction(OrderTotal total,HttpServletRequest req) throws DBException {
         Connection con = null;
         try {
             con = DBManager.getInstance().startTransaction();
@@ -64,18 +70,19 @@ public class UserOrdersCommand extends Command {
             DBManager.getInstance().commitTransaction(con);
         } catch (SQLException e) {
             DBManager.getInstance().rollbackTransaction(con);
+            throw new DBException(e.getMessage(),e);
         }finally {
             DBManager.getInstance().close(con);
         }
     }
 
-    private void updateUserAmount(OrderTotal total, HttpServletRequest req, Connection con) {
+    private void updateUserAmount(OrderTotal total, HttpServletRequest req, Connection con) throws DBException {
         User user = (User) req.getSession().getAttribute("user");
         user.setAmount(user.getAmount() + total.getSum());
         userServ.updateUserAmount(user, con);
     }
 
-    private List<OrderTotal> getUserTotals(HttpServletRequest req) {
+    private List<OrderTotal> getUserTotals(HttpServletRequest req) throws DBException {
         List<Order> orders =
                 orderServ.findOrdersByUser((User) req.getSession().getAttribute("user"));
         orderServ.setCarTotal(orders, carTotalServ);

@@ -4,6 +4,7 @@ package com.rental.dao;
 import com.rental.bean.CarTotal;
 import com.rental.bean.Order;
 import com.rental.bean.User;
+import com.rental.exception.DBException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,7 +17,6 @@ public class OrderDao {
             "insert into orders(rent_from,rent_to,car_total_id,account_id,numb_of_drivers,numb_of_cars)" +
                     "values(?,?,?,?,?,?);";
     private static final String SQL_FIND_ORDER_BY_USER_ID = "select * from orders where account_id=?;";
-    private static final String SQL_FIND_ALL_ORDERS = "select * from orders;";
     private static final String SQL_FIND_ORDER_BY_ID = "select * from orders where id=?;";
     private static final String SQL_COUNT_NOT_AVAILABLE_CARS =
             "select sum(numb_of_cars) from orders where(rent_from=? or rent_to=?) and car_total_id=?;";
@@ -29,13 +29,13 @@ public class OrderDao {
         dbManager = DBManager.getInstance();
     }
 
-    public void insertOrder(Order order) {
+    public void insertOrder(Order order) throws DBException {
         Connection con = null;
         try {
             con = dbManager.getConnection();
             insertOrder(con, order);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't insert Order!",e);
         } finally {
             dbManager.close(con);
         }
@@ -64,7 +64,7 @@ public class OrderDao {
         rs.close();
     }
 
-    public int countNotAvailableDrivers(Order order) {
+    public int countNotAvailableDrivers(Order order) throws DBException {
         int sum = 0;
         Connection con = null;
         PreparedStatement prepSt = null;
@@ -81,7 +81,7 @@ public class OrderDao {
                 sum = rs.getInt(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't count not available Drivers!",e);
         } finally {
             dbManager.close(rs);
             dbManager.close(prepSt);
@@ -90,7 +90,7 @@ public class OrderDao {
         return sum;
     }
 
-    public int countNotAvailableCars(Order order) {
+    public int countNotAvailableCars(Order order) throws DBException {
         int sum = 0;
         Connection con = null;
         PreparedStatement prepSt = null;
@@ -107,7 +107,7 @@ public class OrderDao {
                 sum = rs.getInt(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't count not available Cars!",e);
         } finally {
             dbManager.close(rs);
             dbManager.close(prepSt);
@@ -116,7 +116,7 @@ public class OrderDao {
         return sum;
     }
 
-    public List<Order> findOrdersByUser(User user) {
+    public List<Order> findOrdersByUser(User user) throws DBException {
         List<Order> orders = new ArrayList<>();
         Connection con = null;
         PreparedStatement prepSt = null;
@@ -132,7 +132,7 @@ public class OrderDao {
                 orders.add(order);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't find User's Orders!",e);
         } finally {
             dbManager.close(rs);
             dbManager.close(prepSt);
@@ -141,7 +141,7 @@ public class OrderDao {
         return orders;
     }
 
-    public Order findOrderById(int id) {
+    public Order findOrderById(int id) throws DBException {
         Connection con = null;
         PreparedStatement prepSt = null;
         ResultSet rs = null;
@@ -155,7 +155,7 @@ public class OrderDao {
                 order = mapOrder(rs);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't find Order by ID!",e);
         } finally {
             dbManager.close(rs);
             dbManager.close(prepSt);

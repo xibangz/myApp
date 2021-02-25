@@ -2,6 +2,7 @@ package com.rental.dao;
 
 
 import com.rental.bean.User;
+import com.rental.exception.DBException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -25,25 +26,8 @@ public class UserDao {
         dbManager = DBManager.getInstance();
     }
 
-    public void updateUserAmount(User user) {
-        Connection con = null;
-        PreparedStatement prepSt = null;
-        try {
-            con = dbManager.getConnection();
-            prepSt = con.prepareStatement(SQL_UPDATE_USER_AMOUNT);
-            int z = 1;
-            prepSt.setInt(z++, user.getAmount());
-            prepSt.setInt(z, user.getId());
-            prepSt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            dbManager.close(prepSt);
-            dbManager.close(con);
-        }
-    }
 
-    public void updateUserAmount(User user, Connection con) {
+    public void updateUserAmount(User user, Connection con) throws DBException {
         PreparedStatement prepSt = null;
         try {
             prepSt = con.prepareStatement(SQL_UPDATE_USER_AMOUNT);
@@ -52,19 +36,19 @@ public class UserDao {
             prepSt.setInt(z, user.getId());
             prepSt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't update User's amount!",e);
         } finally {
             dbManager.close(prepSt);
         }
     }
 
-    public void insertUser(User user) {
+    public void insertUser(User user) throws DBException {
         Connection con = null;
         try {
             con = dbManager.getConnection();
             insertUser(con, user);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't insert User!",e);
         } finally {
             dbManager.close(con);
         }
@@ -91,7 +75,7 @@ public class UserDao {
         rs.close();
     }
 
-    public User findUserByLogin(String login) {
+    public User findUserByLogin(String login) throws DBException {
         Connection con = null;
         PreparedStatement prepSt = null;
         ResultSet rs = null;
@@ -105,7 +89,7 @@ public class UserDao {
                 user = mapUser(rs);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't find User by login!",e);
         } finally {
             dbManager.close(rs);
             dbManager.close(prepSt);
@@ -114,7 +98,7 @@ public class UserDao {
         return user;
     }
 
-    public List<User> findAllUsers() {
+    public List<User> findAllUsers() throws DBException {
         List<User> users = new ArrayList<>();
         Connection con = null;
         Statement st = null;
@@ -127,7 +111,7 @@ public class UserDao {
                 users.add(mapUser(rs));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't find all Users!",e);
         } finally {
             dbManager.close(rs);
             dbManager.close(st);
@@ -136,7 +120,7 @@ public class UserDao {
         return users;
     }
 
-    public List<User> findAllUsersClients() {
+    public List<User> findAllUsersClients() throws DBException {
         List<User> users = new ArrayList<>();
         Connection con = null;
         Statement st = null;
@@ -149,7 +133,7 @@ public class UserDao {
                 users.add(mapUser(rs));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't find all Clients!",e);
         } finally {
             dbManager.close(rs);
             dbManager.close(st);
@@ -158,7 +142,7 @@ public class UserDao {
         return users;
     }
 
-    public User findUserById(int id) {
+    public User findUserById(int id) throws DBException {
         Connection con = null;
         PreparedStatement prepSt = null;
         ResultSet rs = null;
@@ -172,7 +156,7 @@ public class UserDao {
                 user = mapUser(rs);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't find User by ID!",e);
         } finally {
             dbManager.close(rs);
             dbManager.close(prepSt);
@@ -181,7 +165,7 @@ public class UserDao {
         return user;
     }
 
-    public void updateUserPassport(User user) {
+    public void updateUserPassport(User user) throws DBException {
         Connection con = null;
         PreparedStatement prepSt = null;
         try {
@@ -192,14 +176,14 @@ public class UserDao {
             prepSt.setInt(z, user.getId());
             prepSt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't update User's passport!",e);
         } finally {
             dbManager.close(prepSt);
             dbManager.close(con);
         }
     }
 
-    public void updateUserBlockedById(User user) {
+    public void updateUserBlockedById(User user) throws DBException {
         Connection con = null;
         PreparedStatement prepSt = null;
         try {
@@ -210,7 +194,7 @@ public class UserDao {
             prepSt.setInt(z, user.getId());
             prepSt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't update User's block!",e);
         } finally {
             dbManager.close(prepSt);
             dbManager.close(con);

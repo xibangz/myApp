@@ -4,6 +4,7 @@ import com.rental.Path;
 import com.rental.bean.Car;
 import com.rental.bean.CarTotal;
 import com.rental.dao.DBManager;
+import com.rental.exception.DBException;
 import com.rental.service.*;
 
 import javax.servlet.ServletContext;
@@ -30,11 +31,16 @@ public class AdminCarsCommand extends Command {
 
         showUpdateItem(req.getParameter("showUpdate"), req);
         showAddCar(req.getParameter("showAddCar"),req);
-        addCarTotal(req.getParameter("addCarTotal"), req);
-        addCar(req.getParameter("addCar"), req);
-        updateCarTotal(req.getParameter("updateCarTotal"), req);
-        deleteCarTotal(req.getParameter("deleteCarTotal"));
-        deleteCar(req.getParameter("deleteCar"));
+        try {
+            addCarTotal(req.getParameter("addCarTotal"), req);
+            addCar(req.getParameter("addCar"), req);
+            updateCarTotal(req.getParameter("updateCarTotal"), req);
+            deleteCarTotal(req.getParameter("deleteCarTotal"));
+            deleteCar(req.getParameter("deleteCar"));
+        }catch (DBException e){
+            req.getSession().setAttribute("errorMessage",e.getCause());
+            return Path.ERROR_PAGE;
+        }
 
         return Path.ADMIN_CARS_PAGE_REDIRECT;
     }
@@ -62,7 +68,7 @@ public class AdminCarsCommand extends Command {
         }
     }
 
-    private void addCarTotal(String value, HttpServletRequest req) {
+    private void addCarTotal(String value, HttpServletRequest req) throws DBException {
         if (value != null && !value.isEmpty()) {
             CarTotal total = new CarTotal();
             total.setBrand(req.getParameter("totalBrand"));
@@ -76,7 +82,7 @@ public class AdminCarsCommand extends Command {
         }
     }
 
-    private void addCar(String value, HttpServletRequest req) {
+    private void addCar(String value, HttpServletRequest req) throws DBException {
         if (value != null && !value.isEmpty()) {
             Car car = new Car();
             car.setBrand(req.getParameter("carBrand"));
@@ -87,34 +93,35 @@ public class AdminCarsCommand extends Command {
         }
     }
 
-    private void insertCarTransaction(Car car, boolean value){
+    private void insertCarTransaction(Car car, boolean value) throws DBException {
         Connection con=null;
         try {
             con= DBManager.getInstance().getConnection();
             carServ.insertCar(car,con);
             carTotalServ.updateQuantity(car.getCarTotal(), value,con);
             DBManager.getInstance().commitTransaction(con);
-        } catch (SQLException e) {
+        } catch (SQLException | DBException e) {
             DBManager.getInstance().rollbackTransaction(con);
+            throw new DBException(e.getMessage(),e);
         }finally {
             DBManager.getInstance().close(con);
         }
     }
 
-    private void deleteCarTotal(String value) {
+    private void deleteCarTotal(String value) throws DBException {
         if (value != null && !value.isEmpty()) {
             carTotalServ.deleteCarTotal(Integer.parseInt(value));
         }
     }
 
-    private void deleteCar(String value) {
+    private void deleteCar(String value) throws DBException {
         if (value != null && !value.isEmpty()) {
             int id = Integer.parseInt(value);
             updateCarTransaction(id,false);
         }
     }
 
-    private void updateCarTransaction(int id,boolean value){
+    private void updateCarTransaction(int id,boolean value) throws DBException {
         Connection con=null;
         try {
             con= DBManager.getInstance().getConnection();
@@ -122,14 +129,15 @@ public class AdminCarsCommand extends Command {
             carServ.deleteCar(id,con);
             carTotalServ.updateQuantity(carTotalId, value,con);
             DBManager.getInstance().commitTransaction(con);
-        } catch (SQLException e) {
+        } catch (SQLException | DBException e) {
             DBManager.getInstance().rollbackTransaction(con);
+            throw new DBException(e.getMessage(),e);
         }finally {
             DBManager.getInstance().close(con);
         }
     }
 
-    private void updateCarTotal(String value, HttpServletRequest req) {
+    private void updateCarTotal(String value, HttpServletRequest req) throws DBException {
         if (value != null && !value.isEmpty()) {
             CarTotal total = new CarTotal();
             total.setId(Integer.parseInt(req.getParameter("totalId")));

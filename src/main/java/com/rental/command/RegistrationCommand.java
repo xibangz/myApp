@@ -3,6 +3,7 @@ package com.rental.command;
 import com.rental.Path;
 import com.rental.bean.Role;
 import com.rental.bean.User;
+import com.rental.exception.DBException;
 import com.rental.service.UserService;
 
 
@@ -28,34 +29,40 @@ public class RegistrationCommand extends Command {
         User user = (User) session.getAttribute("user");
         String errorMessage = "errorMessage";
         String passport;
-        if (user == null) {
-            if (userServ.findUserByLogin(req.getParameter(USER_LOGIN)) != null) {
-                session.setAttribute(errorMessage, "Login already exists.");
-                return Path.ERROR_PAGE;
-            }
-            if (!validateLoginPassword(req)) {
-                session.setAttribute(errorMessage, "Incorrect value of Login/Password.");
-                return Path.ERROR_PAGE;
-            }
-            passport = req.getParameter(USER_PASSPORT);
-            if (passport != null && !passport.isEmpty() && !validatePassport(passport)) {
-                session.setAttribute(errorMessage, "Incorrect value of Passport.");
-                return Path.ERROR_PAGE;
+        try {
+            if (user == null) {
+                if (userServ.findUserByLogin(req.getParameter(USER_LOGIN)) != null) {
+                    session.setAttribute(errorMessage, "Login already exists.");
+                    return Path.ERROR_PAGE;
+                }
+                if (!validateLoginPassword(req)) {
+                    session.setAttribute(errorMessage, "Incorrect value of Login/Password.");
+                    return Path.ERROR_PAGE;
+                }
+                passport = req.getParameter(USER_PASSPORT);
+                if (passport != null && !passport.isEmpty() && !validatePassport(passport)) {
+                    session.setAttribute(errorMessage, "Incorrect value of Passport.");
+                    return Path.ERROR_PAGE;
 
+                }
+                user = insertUser(req);
+                setSession(user, req.getParameter("localeName"), session);
+                return Path.HOME_PAGE;
+            } else {
+                passport = req.getParameter(USER_PASSPORT);
+                if (passport == null || passport.isEmpty() || !validatePassport(passport)) {
+                    session.setAttribute(errorMessage, "Incorrect value of Passport.");
+                    return Path.ERROR_PAGE;
+                }
+                updateUserPassport(user, req);
+
+                return session.getAttribute("order") != null
+                        ? Path.USER_ORDER_CONFIRM
+                        : Path.HOME_PAGE;
             }
-            user = insertUser(session, req);
-            setSession(user, req.getParameter("localeName"), session);
-            return Path.HOME_PAGE;
-        } else {
-            passport = req.getParameter(USER_PASSPORT);
-            if (passport == null || passport.isEmpty() || !validatePassport(passport)) {
-                session.setAttribute(errorMessage, "Incorrect value of Passport.");
-                return Path.ERROR_PAGE;
-            }
-            updateUserPassport(user, req);
-            return session.getAttribute("order") != null
-                    ? Path.USER_ORDER_CONFIRM
-                    : Path.HOME_PAGE;
+        } catch (DBException e) {
+            req.getSession().setAttribute("errorMessage", e.getMessage());
+            return Path.ERROR_PAGE;
         }
     }
 
@@ -88,7 +95,7 @@ public class RegistrationCommand extends Command {
         session.setMaxInactiveInterval(1000);
     }
 
-    private User insertUser(HttpSession session, HttpServletRequest req) {
+    private User insertUser(HttpServletRequest req) throws DBException {
         User user = new User();
         user.setLogin(req.getParameter(USER_LOGIN));
         user.setPassword(req.getParameter(USER_PASSWORD));
@@ -98,7 +105,7 @@ public class RegistrationCommand extends Command {
         return user;
     }
 
-    private void updateUserPassport(User user, HttpServletRequest req) {
+    private void updateUserPassport(User user, HttpServletRequest req) throws DBException {
         user.setPassport(req.getParameter("passport"));
         userServ.updateUserPassport(user);
     }

@@ -4,6 +4,7 @@ import com.rental.Path;
 import com.rental.bean.*;
 import com.rental.dao.DBManager;
 import com.rental.dao.Fields;
+import com.rental.exception.DBException;
 import com.rental.service.*;
 
 import javax.servlet.ServletContext;
@@ -39,23 +40,27 @@ public class OrderCommand extends Command {
             sessionRemove(session);
             return Path.CARS_LIST_PAGE;
         }
-
-        if (total != null) {
-            insertTotal(total, session);
-            return Path.USER_ORDERS_PAGE_REDIRECT;
-        }
-        if (order == null) {
-            order = createNewOrder(req, content);
-            if (orderCheck(order)) {
-                total = createNewOrderTotal(order);
+        try {
+            if (total != null) {
+                insertTotal(total, session);
+                return Path.USER_ORDERS_PAGE_REDIRECT;
             }
-        } else {
-            if (orderCheck(order)) {
-                total = createNewOrderTotal(order);
+            if (order == null) {
+                order = createNewOrder(req, content);
+                if (orderCheck(order)) {
+                    total = createNewOrderTotal(order);
+                }
             } else {
-                updateOrder(req, order, content);
-                total = orderCheck(order) ? createNewOrderTotal(order) : null;
+                if (orderCheck(order)) {
+                    total = createNewOrderTotal(order);
+                } else {
+                    updateOrder(req, order, content);
+                    total = orderCheck(order) ? createNewOrderTotal(order) : null;
+                }
             }
+        }catch (DBException e){
+            req.getSession().setAttribute("errorMessage",e.getMessage());
+            return Path.ERROR_PAGE;
         }
 
         session.setAttribute("order", order);
@@ -79,7 +84,7 @@ public class OrderCommand extends Command {
         driverCatServ = (DriverCategoryService) context.getAttribute("driverCatServ");
     }
 
-    private void insertTotal(OrderTotal total, HttpSession session) {
+    private void insertTotal(OrderTotal total, HttpSession session) throws DBException {
         Connection con = null;
         try {
             con = DBManager.getInstance().startTransaction();
@@ -88,13 +93,14 @@ public class OrderCommand extends Command {
             DBManager.getInstance().commitTransaction(con);
         } catch (SQLException e) {
             DBManager.getInstance().rollbackTransaction(con);
+            throw new DBException(e.getMessage(),e);
         } finally {
             sessionRemove(session);
             DBManager.getInstance().close(con);
         }
     }
 
-    private Order createNewOrder(HttpServletRequest req, OrderPageInfoContent content) {
+    private Order createNewOrder(HttpServletRequest req, OrderPageInfoContent content) throws DBException {
         Order order = new Order();
         int totalId = Integer.parseInt(req.getParameter("carTotal"));
         String rentFromValue = req.getParameter(totalId + "rentFrom");
@@ -112,13 +118,12 @@ public class OrderCommand extends Command {
         return order;
     }
 
-    private void updateOrder(HttpServletRequest req, Order order, OrderPageInfoContent content) {
+    private void updateOrder(HttpServletRequest req, Order order, OrderPageInfoContent content) throws DBException {
         String rentFromValue = req.getParameter("rentFrom");
         String rentToValue = req.getParameter("rentTo");
         String numbOfCarsValue = req.getParameter("numbOfCars");
         String numbOfDriversValue = req.getParameter("numbOfDrivers");
         User clientValue = (User) req.getSession().getAttribute("user");
-
         rentFromCheck(rentFromValue, order, content);
         rentToCheck(rentToValue, order, content);
         numbOfCarsCheck(numbOfCarsValue, order, order.getCarTotal().getId(), content);
@@ -170,7 +175,7 @@ public class OrderCommand extends Command {
         order.setClient(user);
     }
 
-    private void numbOfDriversCheck(String value, Order order, OrderPageInfoContent content) {
+    private void numbOfDriversCheck(String value, Order order, OrderPageInfoContent content) throws DBException {
         if (value == null || value.isEmpty()) {
             content.setNumbOfDriversInfo("Number of drivers can't be empty!");
             return;
@@ -203,7 +208,7 @@ public class OrderCommand extends Command {
         }
     }
 
-    private void numbOfCarsCheck(String value, Order order, int id, OrderPageInfoContent content) {
+    private void numbOfCarsCheck(String value, Order order, int id, OrderPageInfoContent content) throws DBException {
         if (value == null || value.isEmpty()) {
             content.setNumbOfDriversInfo("Number of cars can't be empty!");
             return;

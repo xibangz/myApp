@@ -5,6 +5,7 @@ import com.rental.bean.Order;
 import com.rental.bean.OrderTotal;
 import com.rental.bean.User;
 import com.rental.dao.Fields;
+import com.rental.exception.DBException;
 import com.rental.service.CarTotalService;
 import com.rental.service.OrderService;
 import com.rental.service.OrderTotalService;
@@ -26,13 +27,18 @@ public class ManageUsersCommand extends Command{
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         initServices(req);
-        showUserOrders(req.getParameter("userOrders"),req);
         showPenalty(req.getParameter("showOrderPenalty"),req);
-        addPenalty(req.getParameter("addOrderPenalty"),req);
+        try {
+            showUserOrders(req.getParameter("userOrders"), req);
+            addPenalty(req.getParameter("addOrderPenalty"), req);
+        }catch (DBException e){
+            req.getSession().setAttribute("errorMessage",e.getMessage());
+            return Path.ERROR_PAGE;
+        }
         return Path.MANAGE_USERS_PAGE_REDIRECT;
     }
 
-    private void showUserOrders(String value,HttpServletRequest req){
+    private void showUserOrders(String value,HttpServletRequest req) throws DBException {
         if(value!=null &&!value.isEmpty()){
             int index = Integer.parseInt(value);
             List<User> list = (List<User>) req.getSession().getAttribute("usersList");
@@ -54,7 +60,7 @@ public class ManageUsersCommand extends Command{
         orderServ = (OrderService) context.getAttribute("orderServ");
         carTotalServ=(CarTotalService) context.getAttribute("carTotalServ");
     }
-    private void addPenalty(String value, HttpServletRequest req) {
+    private void addPenalty(String value, HttpServletRequest req) throws DBException {
         if (value != null && !value.isEmpty()) {
             Order order = new Order();
             order.setId(Integer.parseInt(value));

@@ -1,16 +1,14 @@
 package com.rental.dao;
 
 import com.rental.bean.Car;
-import lombok.extern.log4j.Log4j;
+import com.rental.exception.DBException;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import static com.rental.dao.Fields.*;
 
-@Log4j
 public class CarDao {
     private static final String SQL_FIND_ALL_CARS = "select * from car;";
     private static final String SQL_INSERT_CAR = "insert into car(brand,model,numbers,car_total_id) values(?,?,?,?)";
@@ -23,7 +21,7 @@ public class CarDao {
         dbManager = DBManager.getInstance();
     }
 
-    public void updateCarOk(Car car, Connection con) {
+    public void updateCarOk(Car car, Connection con) throws DBException {
         PreparedStatement prepSt = null;
         try {
             prepSt = con.prepareStatement(SQL_UPDATE_CAR_OK);
@@ -32,13 +30,13 @@ public class CarDao {
             prepSt.setInt(z, car.getId());
             prepSt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't update Car.Ok!",e);
         } finally {
             dbManager.close(prepSt);
         }
     }
 
-    public List<Car> findAllCars() {
+    public List<Car> findAllCars() throws DBException {
         List<Car> cars = new ArrayList<>();
         Connection con = null;
         Statement st = null;
@@ -51,7 +49,7 @@ public class CarDao {
                 cars.add(mapCar(rs));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't find Cars!",e);
         } finally {
             dbManager.close(rs);
             dbManager.close(st);
@@ -60,13 +58,13 @@ public class CarDao {
         return cars;
     }
 
-    public void insertCar(Car car) {
+    public void insertCar(Car car) throws DBException {
         Connection con = null;
         try {
             con = dbManager.getConnection();
             insertCar(con, car);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't insert Car!",e);
         } finally {
             dbManager.close(con);
         }
@@ -93,20 +91,20 @@ public class CarDao {
         rs.close();
     }
 
-    public void deleteCar(int id,Connection con) {
+    public void deleteCar(int id,Connection con) throws DBException {
         PreparedStatement prepSt = null;
         try {
             prepSt = con.prepareStatement(SQL_DELETE_CAR);
             prepSt.setInt(1, id);
             prepSt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't delete Car!",e);
         } finally {
             dbManager.close(prepSt);
         }
     }
 
-    public int findCarTotalId(int id) {
+    public int findCarTotalId(int id) throws DBException {
         int carTotalId = -1;
         Connection con = null;
         PreparedStatement prepSt = null;
@@ -120,7 +118,7 @@ public class CarDao {
                 carTotalId = rs.getInt(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't find CarTotalId!",e);
         } finally {
             dbManager.close(rs);
             dbManager.close(prepSt);

@@ -1,6 +1,7 @@
 package com.rental.command;
 
 import com.rental.Path;
+import com.rental.exception.DBException;
 import com.rental.service.*;
 
 import javax.servlet.ServletContext;
@@ -24,23 +25,27 @@ public class AdministrationCommand extends Command {
         String page = null;
         HttpSession session = req.getSession();
         initServices(req);
-
-        switch (req.getParameter("admin")) {
-            case "Cars":
-                session.setAttribute("carTotalsList", carTotalServ.findAllCars());
-                session.setAttribute("carsList", carServ.findAllCars());
-                page = Path.ADMIN_CARS_PAGE;
-                break;
-            case "Users":
-                session.setAttribute("usersList", userServ.findAllUsers());
-                page = Path.ADMIN_USERS_PAGE;
-                break;
-            case "Drivers":
-                session.setAttribute("driversList", driverServ.findAllDrivers());
-                session.setAttribute("driverCatsList", driverCatServ.findAllDriverCats());
-                page = Path.ADMIN_DRIVERS_PAGE;
-                break;
-            default:
+        try {
+            switch (req.getParameter("admin")) {
+                case "Cars":
+                    session.setAttribute("carTotalsList", carTotalServ.findAllCars());
+                    session.setAttribute("carsList", carServ.findAllCars());
+                    page = Path.ADMIN_CARS_PAGE;
+                    break;
+                case "Users":
+                    session.setAttribute("usersList", userServ.findAllUsers());
+                    page = Path.ADMIN_USERS_PAGE;
+                    break;
+                case "Drivers":
+                    session.setAttribute("driversList", driverServ.findAllDrivers());
+                    session.setAttribute("driverCatsList", driverCatServ.findAllDriverCats());
+                    page = Path.ADMIN_DRIVERS_PAGE;
+                    break;
+                default:
+            }
+        }catch (DBException e){
+            session.setAttribute("errorMessage",e.getMessage());
+            return Path.ERROR_PAGE;
         }
         return page;
     }

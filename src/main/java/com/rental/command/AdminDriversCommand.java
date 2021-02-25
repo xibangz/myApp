@@ -3,6 +3,7 @@ package com.rental.command;
 import com.rental.Path;
 import com.rental.bean.Driver;
 import com.rental.bean.DriverCategory;
+import com.rental.exception.DBException;
 import com.rental.service.*;
 
 import javax.servlet.ServletContext;
@@ -24,11 +25,16 @@ public class AdminDriversCommand extends Command {
 
         showUpdateItem(req.getParameter("showUpdate"), req);
         showAddDriver(req.getParameter("showAddDriver"),req);
-        addDriver(req.getParameter("addDriver"), req);
-        deleteDriver(req.getParameter("deleteDriver"));
-        insertDriverCat(req.getParameter("addDriverCat"), req);
-        updateDriverCat(req.getParameter("updateDriverCat"), req);
-        deleteDriverCat(req.getParameter("deleteDriverCat"));
+        try {
+            addDriver(req.getParameter("addDriver"), req);
+            deleteDriver(req.getParameter("deleteDriver"));
+            insertDriverCat(req.getParameter("addDriverCat"), req);
+            updateDriverCat(req.getParameter("updateDriverCat"), req);
+            deleteDriverCat(req.getParameter("deleteDriverCat"));
+        }catch (DBException e){
+            req.getSession().setAttribute("errorMessage",e.getMessage());
+            return Path.ERROR_PAGE;
+        }
 
         return Path.ADMIN_DRIVERS_PAGE_REDIRECT;
     }
@@ -55,7 +61,7 @@ public class AdminDriversCommand extends Command {
         }
     }
 
-    private void addDriver(String value, HttpServletRequest req) {
+    private void addDriver(String value, HttpServletRequest req) throws DBException {
         if (value != null && !value.isEmpty()) {
             Driver driver = new Driver();
             List<DriverCategory> a = (List<DriverCategory>) req.getSession().getAttribute("driverCatsList");
@@ -76,13 +82,13 @@ public class AdminDriversCommand extends Command {
         return category;
     }
 
-    private void deleteDriver(String value) {
+    private void deleteDriver(String value) throws DBException {
         if (value != null && !value.isEmpty()) {
             driverServ.deleteDriver(Integer.parseInt(value));
         }
     }
 
-    private void insertDriverCat(String value, HttpServletRequest req) {
+    private void insertDriverCat(String value, HttpServletRequest req) throws DBException {
         if (value != null && !value.isEmpty()) {
             DriverCategory category = new DriverCategory();
             category.setName(req.getParameter("driverCatName"));
@@ -91,13 +97,13 @@ public class AdminDriversCommand extends Command {
         }
     }
 
-    private void deleteDriverCat(String value) {
+    private void deleteDriverCat(String value) throws DBException {
         if (value != null && !value.isEmpty()) {
             driverCatServ.deleteDriverCat(Integer.parseInt(value));
         }
     }
 
-    private void updateDriverCat(String value, HttpServletRequest req) {
+    private void updateDriverCat(String value, HttpServletRequest req) throws DBException {
         if (value != null && !value.isEmpty()) {
             DriverCategory category = new DriverCategory();
             category.setId(Integer.parseInt(req.getParameter("driverCatId")));

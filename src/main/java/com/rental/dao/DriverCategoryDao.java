@@ -2,6 +2,7 @@ package com.rental.dao;
 
 import com.rental.bean.Car;
 import com.rental.bean.DriverCategory;
+import com.rental.exception.DBException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -25,15 +26,13 @@ public class DriverCategoryDao {
         dbManager = DBManager.getInstance();
     }
 
-    public boolean insertDriverCategory(DriverCategory cat) {
+    public void insertDriverCategory(DriverCategory cat) throws DBException {
         Connection con = null;
         try {
             con = dbManager.getConnection();
             insertDriverCategory(con, cat);
-            return true;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new DBException("Can't insert DriverCategory!",e);
         } finally {
             dbManager.close(con);
         }
@@ -48,7 +47,7 @@ public class DriverCategoryDao {
         prepSt.close();
     }
 
-    public boolean deleteDriverCategory(int id) {
+    public void deleteDriverCategory(int id) throws DBException {
         Connection con = null;
         PreparedStatement prepSt = null;
         try {
@@ -56,17 +55,15 @@ public class DriverCategoryDao {
             prepSt = con.prepareStatement(SQL_DELETE_DRIVER_CATEGORY_BY_ID);
             prepSt.setInt(1, id);
             prepSt.executeUpdate();
-            return true;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new DBException("Can't delete DriverCategory!",e);
         } finally {
             dbManager.close(prepSt);
             dbManager.close(con);
         }
     }
 
-    public DriverCategory findDriverCategoryById(int id) {
+    public DriverCategory findDriverCategoryById(int id) throws DBException {
         Connection con = null;
         PreparedStatement prepSt = null;
         ResultSet rs = null;
@@ -80,7 +77,7 @@ public class DriverCategoryDao {
                 category = mapDriverCat(rs);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't find DriverCategory by ID!",e);
         } finally {
             dbManager.close(rs);
             dbManager.close(prepSt);
@@ -89,7 +86,7 @@ public class DriverCategoryDao {
         return category;
     }
 
-    public DriverCategory findDriverCategoryByName(String name) {
+    public DriverCategory findDriverCategoryByName(String name) throws DBException {
         Connection con = null;
         PreparedStatement prepSt = null;
         ResultSet rs = null;
@@ -103,7 +100,7 @@ public class DriverCategoryDao {
                 category = mapDriverCat(rs);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't find DriverCategory by name!",e);
         } finally {
             dbManager.close(rs);
             dbManager.close(prepSt);
@@ -112,7 +109,7 @@ public class DriverCategoryDao {
         return category;
     }
 
-    public boolean updateDriverCategoryPrice(DriverCategory cat) {
+    public void updateDriverCategoryPrice(DriverCategory cat) throws DBException {
         Connection con = null;
         PreparedStatement prepSt = null;
         try {
@@ -122,17 +119,15 @@ public class DriverCategoryDao {
             prepSt.setInt(z++, cat.getPrice());
             prepSt.setInt(z, cat.getId());
             prepSt.executeUpdate();
-            return true;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new DBException("Can't update DriverCategory price!",e);
         } finally {
             dbManager.close(prepSt);
             dbManager.close(con);
         }
     }
 
-    public List<DriverCategory> findDriverCategories() {
+    public List<DriverCategory> findDriverCategories() throws DBException {
         List<DriverCategory> names = new ArrayList<>();
         Connection con = null;
         Statement stmt = null;
@@ -147,8 +142,8 @@ public class DriverCategoryDao {
                 drCat.setId(rs.getInt(ENTITY_ID));
                 names.add(drCat);
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (SQLException e) {
+            throw new DBException("Can't find DriverCategory names!",e);
         } finally {
             dbManager.close(rs);
             dbManager.close(stmt);
@@ -157,7 +152,7 @@ public class DriverCategoryDao {
         return names;
     }
 
-    public List<DriverCategory> findAllDriverCats() {
+    public List<DriverCategory> findAllDriverCats() throws DBException {
         List<DriverCategory> names = new ArrayList<>();
         Connection con = null;
         Statement stmt = null;
@@ -169,8 +164,8 @@ public class DriverCategoryDao {
             while (rs.next()) {
                 names.add(mapDriverCat(rs));
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (SQLException e) {
+            throw new DBException("Can't find all DriverCategories!",e);
         } finally {
             dbManager.close(rs);
             dbManager.close(stmt);

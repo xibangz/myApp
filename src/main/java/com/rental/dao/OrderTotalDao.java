@@ -2,6 +2,7 @@ package com.rental.dao;
 
 import com.rental.bean.Order;
 import com.rental.bean.OrderTotal;
+import com.rental.exception.DBException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -25,13 +26,13 @@ public class OrderTotalDao {
         dbManager = DBManager.getInstance();
     }
 
-    public void insertOrderTotal(OrderTotal total) {
+    public void insertOrderTotal(OrderTotal total) throws DBException {
         Connection con = null;
         try {
             con = dbManager.getConnection();
             insertOrderTotal(con, total);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't insert OrderTotal!",e);
         } finally {
             dbManager.close(con);
         }
@@ -59,7 +60,7 @@ public class OrderTotalDao {
         rs.close();
     }
 
-    public List<OrderTotal> findOrderTotalByOrder(Order order) {
+    public List<OrderTotal> findOrderTotalByOrder(Order order) throws DBException {
         List<OrderTotal> totals = new ArrayList<>();
         Connection con = null;
         PreparedStatement prepSt = null;
@@ -74,8 +75,8 @@ public class OrderTotalDao {
                 total.setOrder(order);
                 totals.add(total);
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (SQLException e) {
+            throw new DBException("Can't find OrderTotal by Order!",e);
         } finally {
             dbManager.close(rs);
             dbManager.close(prepSt);
@@ -84,7 +85,7 @@ public class OrderTotalDao {
         return totals;
     }
 
-    public OrderTotal findOrderTotalByOrder(int id) {
+    public OrderTotal findOrderTotalByOrder(int id) throws DBException {
         Connection con = null;
         PreparedStatement prepSt = null;
         ResultSet rs = null;
@@ -97,8 +98,8 @@ public class OrderTotalDao {
             if (rs.next()) {
                 total = mapOrderTotal(rs);
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (SQLException e) {
+            throw new DBException("Can't find OrderTotal by Order's ID!",e);
         } finally {
             dbManager.close(rs);
             dbManager.close(prepSt);
@@ -107,7 +108,7 @@ public class OrderTotalDao {
         return total;
     }
 
-    public List<OrderTotal> findAllOrderTotals() {
+    public List<OrderTotal> findAllOrderTotals() throws DBException {
         List<OrderTotal> totals = new ArrayList<>();
         Connection con = null;
         Statement st = null;
@@ -119,8 +120,8 @@ public class OrderTotalDao {
             while (rs.next()) {
                 totals.add(mapOrderTotal(rs));
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (SQLException e) {
+            throw new DBException("Can't find all OrderTotals!",e);
         } finally {
             dbManager.close(rs);
             dbManager.close(st);
@@ -129,13 +130,13 @@ public class OrderTotalDao {
         return totals;
     }
 
-    public void updateOrderTotal(OrderTotal total) {
+    public void updateOrderTotal(OrderTotal total) throws DBException {
         Connection con = null;
         try {
             con = dbManager.getConnection();
             updateOrderTotal(con, total);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't update OrderTotal!",e);
         } finally {
             dbManager.close(con);
         }

@@ -2,6 +2,7 @@ package com.rental.command;
 
 import com.rental.Path;
 
+import com.rental.exception.DBException;
 import com.rental.service.*;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -25,21 +26,26 @@ public class ManagementCommand extends Command {
         initServices(req);
         String page = null;
         HttpSession session = req.getSession();
-        switch (req.getParameter("manage")) {
-            case "Orders":
-                session.setAttribute("orderTotalsList", orderTotalServ.findAllOrderTotals());
-                page = Path.MANAGE_ORDERS_PAGE;
-                break;
-            case "Drivers&Cars":
-                session.setAttribute("driversList", driverServ.findAllDrivers());
-                session.setAttribute("carsList", carServ.findAllCars());
-                page = Path.MANAGE_DRIVERS_CARS_PAGE;
-                break;
-            case "Users":
-                session.setAttribute("usersList",userServ.findAllClients());
-                page=Path.MANAGE_USERS_PAGE;
-                break;
-            default:
+        try {
+            switch (req.getParameter("manage")) {
+                case "Orders":
+                    session.setAttribute("orderTotalsList", orderTotalServ.findAllOrderTotals());
+                    page = Path.MANAGE_ORDERS_PAGE;
+                    break;
+                case "Drivers&Cars":
+                    session.setAttribute("driversList", driverServ.findAllDrivers());
+                    session.setAttribute("carsList", carServ.findAllCars());
+                    page = Path.MANAGE_DRIVERS_CARS_PAGE;
+                    break;
+                case "Users":
+                    session.setAttribute("usersList", userServ.findAllClients());
+                    page = Path.MANAGE_USERS_PAGE;
+                    break;
+                default:
+            }
+        }catch (DBException e){
+            session.setAttribute("errorMessage",e.getMessage());
+            return Path.ERROR_PAGE;
         }
         return page;
     }

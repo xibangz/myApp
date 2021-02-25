@@ -7,6 +7,13 @@ public class DBException extends Exception{
         super(message, cause);
     }
 
+    public DBException(Throwable cause) {
+        super(cause);
+    }
+
+    public DBException() {
+    }
+
     public DBException(String message) {
         super(message);
     }

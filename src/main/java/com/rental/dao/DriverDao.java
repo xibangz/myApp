@@ -1,8 +1,8 @@
 package com.rental.dao;
 
-import com.rental.bean.Car;
 import com.rental.bean.Driver;
 import com.rental.bean.DriverCategory;
+import com.rental.exception.DBException;
 
 
 import java.sql.*;
@@ -24,7 +24,7 @@ public class DriverDao {
         dbManager = DBManager.getInstance();
     }
 
-    public void updateDriverOk(Driver driver) {
+    public void updateDriverOk(Driver driver) throws DBException {
         Connection con = null;
         PreparedStatement prepSt = null;
         try {
@@ -35,23 +35,20 @@ public class DriverDao {
             prepSt.setInt(z, driver.getId());
             prepSt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't update Driver.Ok!",e);
         } finally {
             dbManager.close(prepSt);
             dbManager.close(con);
         }
     }
 
-    public boolean insertDriver(Driver driver) {
+    public void insertDriver(Driver driver) throws DBException {
         Connection con = null;
         try {
             con = dbManager.getConnection();
             insertDriver(con, driver);
-            return true;
         } catch (SQLException e) {
-            dbManager.close(con);
-            e.printStackTrace();
-            return false;
+            throw new DBException("Can't insert Driver!",e);
         } finally {
             dbManager.close(con);
         }
@@ -77,7 +74,7 @@ public class DriverDao {
         rs.close();
     }
 
-    public List<Driver> findAllDrivers() {
+    public List<Driver> findAllDrivers() throws DBException {
         List<Driver> drivers = new ArrayList<>();
         Connection con = null;
         Statement stmt = null;
@@ -89,8 +86,8 @@ public class DriverDao {
             while (rs.next()) {
                 drivers.add(mapDriver(rs));
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (SQLException e) {
+            throw new DBException("Can't find all Drivers!",e);
         } finally {
             dbManager.close(rs);
             dbManager.close(stmt);
@@ -111,7 +108,7 @@ public class DriverDao {
     }
 
 
-    public boolean deleteDriver(int id) {
+    public void deleteDriver(int id) throws DBException {
         Connection con = null;
         PreparedStatement prepSt = null;
         try {
@@ -119,10 +116,8 @@ public class DriverDao {
             prepSt = con.prepareStatement(SQL_DELETE_DRIVER);
             prepSt.setInt(1, id);
             prepSt.executeUpdate();
-            return true;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new DBException("Can't delete Driver!",e);
         } finally {
             dbManager.close(prepSt);
             dbManager.close(con);

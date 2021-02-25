@@ -3,6 +3,7 @@ package com.rental.command;
 import com.rental.Path;
 import com.rental.bean.User;
 import com.rental.dao.Fields;
+import com.rental.exception.DBException;
 import com.rental.service.UserService;
 
 import javax.servlet.ServletException;
@@ -18,15 +19,19 @@ public class AdminUsersCommand extends Command {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         userServ = (UserService) req.getServletContext().getAttribute("userServ");
-
-        banUser(req.getParameter("banUser"));
-        unBanUser(req.getParameter("unbanUser"));
-        addManager(req.getParameter("addManager"), req);
+        try {
+            banUser(req.getParameter("banUser"));
+            unBanUser(req.getParameter("unbanUser"));
+            addManager(req.getParameter("addManager"), req);
+        }catch (DBException e){
+           req.getSession().setAttribute("errorMessage",e.getMessage());
+            return Path.ERROR_PAGE;
+        }
 
         return Path.ADMIN_USERS_PAGE_REDIRECT;
     }
 
-    private void banUser(String value) {
+    private void banUser(String value) throws DBException {
         if (value != null && !value.isEmpty()) {
             User user = new User();
             user.setId(Integer.parseInt(value));
@@ -35,7 +40,7 @@ public class AdminUsersCommand extends Command {
         }
     }
 
-    private void unBanUser(String value) {
+    private void unBanUser(String value) throws DBException {
         if (value != null && !value.isEmpty()) {
             User user = new User();
             user.setId(Integer.parseInt(value));
@@ -44,7 +49,7 @@ public class AdminUsersCommand extends Command {
         }
     }
 
-    private void addManager(String value, HttpServletRequest req) {
+    private void addManager(String value, HttpServletRequest req) throws DBException {
         if (value != null && !value.isEmpty()) {
             User user = new User();
             user.setLogin(req.getParameter("login"));

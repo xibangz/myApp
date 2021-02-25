@@ -3,6 +3,7 @@ package com.rental.command;
 import com.rental.Path;
 import com.rental.bean.*;
 import com.rental.dao.Fields;
+import com.rental.exception.DBException;
 import com.rental.service.*;
 
 import javax.servlet.ServletContext;
@@ -23,13 +24,17 @@ public class ManageOrdersCommand extends Command {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         initServices(req);
-
-        showUpdateItem(req.getParameter("showUpdate"), req);
         showRejectDesc(req.getParameter("showReject"), req);
-        rejectOrder(req.getParameter("rejectStatus"), req);
-        confirmOrder(req.getParameter("confirmStatus"));
-        addPenalty(req.getParameter("addPenalty"), req);
         showPenalty(req.getParameter("showPenalty"), req);
+        try {
+            showUpdateItem(req.getParameter("showUpdate"), req);
+            rejectOrder(req.getParameter("rejectStatus"), req);
+            confirmOrder(req.getParameter("confirmStatus"));
+            addPenalty(req.getParameter("addPenalty"), req);
+        }catch (DBException e){
+            req.getSession().setAttribute("errorMessage",e.getMessage());
+            return Path.ERROR_PAGE;
+        }
 
 
         return Path.MANAGE_ORDERS_PAGE_REDIRECT;
@@ -49,7 +54,7 @@ public class ManageOrdersCommand extends Command {
         }
     }
 
-    private void addPenalty(String value, HttpServletRequest req) {
+    private void addPenalty(String value, HttpServletRequest req) throws DBException {
         if (value != null && !value.isEmpty()) {
             OrderTotal total = (OrderTotal) req.getSession().getAttribute("updateItem");
             OrderTotal penalty = new OrderTotal();
@@ -62,7 +67,7 @@ public class ManageOrdersCommand extends Command {
         }
     }
 
-    private void confirmOrder(String value) {
+    private void confirmOrder(String value) throws DBException {
         if (value != null && !value.isEmpty()) {
             OrderTotal total = new OrderTotal();
             total.setOrderStatusId(Fields.ORDER_TOTAL_STATUS_CONFIRMED_ID);
@@ -72,7 +77,7 @@ public class ManageOrdersCommand extends Command {
         }
     }
 
-    private void rejectOrder(String value, HttpServletRequest req) {
+    private void rejectOrder(String value, HttpServletRequest req) throws DBException {
         if (value != null && !value.isEmpty()) {
             OrderTotal total = new OrderTotal();
             total.setOrderStatusId(Fields.ORDER_TOTAL_STATUS_REJECTED_ID);
@@ -83,7 +88,7 @@ public class ManageOrdersCommand extends Command {
         }
     }
 
-    private void showUpdateItem(String value, HttpServletRequest req) {
+    private void showUpdateItem(String value, HttpServletRequest req) throws DBException {
         if (value != null && !value.isEmpty()) {
             OrderTotal total = orderTotalServ.findOrderTotalById(
                     Integer.parseInt(value));

@@ -4,6 +4,7 @@ import com.rental.WebPageConstants;
 import com.rental.bean.CarTotal;
 import com.rental.bean.DriverCategory;
 import com.rental.bean.ProductPageContent;
+import com.rental.exception.DBException;
 
 import java.io.Serializable;
 import java.sql.*;
@@ -36,7 +37,7 @@ public class CarTotalDao {
     }
 
 
-    public int findMaxPrice() {
+    public int findMaxPrice() throws DBException {
         Connection con = null;
         Statement st = null;
         ResultSet rs = null;
@@ -49,7 +50,7 @@ public class CarTotalDao {
                 max = rs.getInt(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't find maxPrice!",e);
         } finally {
             dbManager.close(rs);
             dbManager.close(st);
@@ -58,7 +59,7 @@ public class CarTotalDao {
         return max;
     }
 
-    public int countAllCarTotals() {
+    public int countAllCarTotals() throws DBException {
         Connection con = null;
         Statement st = null;
         ResultSet rs = null;
@@ -71,7 +72,7 @@ public class CarTotalDao {
                 count = rs.getInt(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't count all CarTotals!",e);
         } finally {
             dbManager.close(rs);
             dbManager.close(st);
@@ -80,7 +81,7 @@ public class CarTotalDao {
         return count;
     }
 
-    public int countAllCarTotals(String query) {
+    public int countAllCarTotals(String query) throws DBException {
         Connection con = null;
         Statement st = null;
         ResultSet rs = null;
@@ -93,7 +94,7 @@ public class CarTotalDao {
                 count = rs.getInt(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't count all CarTotals!",e);
         } finally {
             dbManager.close(rs);
             dbManager.close(st);
@@ -103,13 +104,13 @@ public class CarTotalDao {
     }
 
 
-    public void insertCarTotal(CarTotal car) {
+    public void insertCarTotal(CarTotal car) throws DBException {
         Connection con = null;
         try {
             con = dbManager.getConnection();
             insertCarTotal(con, car);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't insert CarTotal!",e);
         } finally {
             dbManager.close(con);
         }
@@ -137,7 +138,7 @@ public class CarTotalDao {
         rs.close();
     }
 
-    public void updateQuantity(int id, boolean positiveNumb,Connection con) {
+    public void updateQuantity(int id, boolean positiveNumb,Connection con) throws DBException {
         PreparedStatement prepSt = null;
         try {
             prepSt = positiveNumb
@@ -146,13 +147,13 @@ public class CarTotalDao {
             prepSt.setInt(1, id);
             prepSt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't update quantity!",e);
         } finally {
             dbManager.close(prepSt);
         }
     }
 
-    public List<CarTotal> findAllCars() {
+    public List<CarTotal> findAllCars() throws DBException {
         List<CarTotal> cars = new ArrayList<>();
         Connection con = null;
         Statement stmt = null;
@@ -164,8 +165,8 @@ public class CarTotalDao {
             while (rs.next()) {
                 cars.add(mapCarTotal(rs));
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (SQLException e) {
+            throw new DBException("Can't find all CarTotals!",e);
         } finally {
             dbManager.close(rs);
             dbManager.close(stmt);
@@ -174,7 +175,7 @@ public class CarTotalDao {
         return cars;
     }
 
-    public Set<String> findAllBrands() {
+    public Set<String> findAllBrands() throws DBException {
         Set<String> brands = new HashSet<>();
         Connection con = null;
         Statement stmt = null;
@@ -186,8 +187,8 @@ public class CarTotalDao {
             while (rs.next()) {
                 brands.add(rs.getString(CAR_TOTAL_BRAND));
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (SQLException e) {
+            throw new DBException("Can't find all brands!",e);
         } finally {
             dbManager.close(rs);
             dbManager.close(stmt);
@@ -209,13 +210,13 @@ public class CarTotalDao {
         return car;
     }
 
-    public void updateCarTotal(CarTotal car) {
+    public void updateCarTotal(CarTotal car) throws DBException {
         Connection con = null;
         try {
             con = dbManager.getConnection();
             updateCarTotal(con, car);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't update CarTotal",e);
         } finally {
             dbManager.close(con);
         }
@@ -234,7 +235,7 @@ public class CarTotalDao {
         prepSt.close();
     }
 
-    public boolean deleteCarTotal(int id) {
+    public void deleteCarTotal(int id) throws DBException {
         Connection con = null;
         PreparedStatement prepSt = null;
         try {
@@ -242,17 +243,15 @@ public class CarTotalDao {
             prepSt = con.prepareStatement(SQL_DELETE_CAR_TOTAL);
             prepSt.setInt(1, id);
             prepSt.executeUpdate();
-            return true;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new DBException("Can't delete CarTotal",e);
         } finally {
             dbManager.close(prepSt);
             dbManager.close(con);
         }
     }
 
-    public CarTotal findCarTotalById(int id) {
+    public CarTotal findCarTotalById(int id) throws DBException {
         Connection con = null;
         PreparedStatement prepSt = null;
         ResultSet rs = null;
@@ -266,7 +265,7 @@ public class CarTotalDao {
                 total = mapCarTotal(rs);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Can't find CarTotal by ID!",e);
         } finally {
             dbManager.close(rs);
             dbManager.close(prepSt);
@@ -275,7 +274,7 @@ public class CarTotalDao {
         return total;
     }
 
-    public List<CarTotal> findSelectedCars(ProductPageContent content) {
+    public List<CarTotal> findSelectedCars(ProductPageContent content) throws DBException {
         List<CarTotal> cars = new ArrayList<>();
         String query = buildQuery(content);
         String secondQuery;
@@ -289,8 +288,8 @@ public class CarTotalDao {
             while (rs.next()) {
                 cars.add(mapCarTotal(rs));
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (SQLException e) {
+            throw new DBException("Can't find selected CarTotals!",e);
         } finally {
             dbManager.close(rs);
             dbManager.close(stmt);
