@@ -7,17 +7,16 @@
 <%@ include file="/WEB-INF/jspf/header.jspf" %>
 <br><br><br><br><br>
 
-<form action="controller" method="post">
+<form action="controller">
 
 <div class="col-md-2 offset-5">
 <label for="Login"><fmt:message key="page.login"/></label>
-<input name="login" class="form-control" id="exampleInputEmail1" aria-describedby="loginHelp" placeholder='<fmt:message key="page.login"/>'>
-<small id="loginHelp" class="form-text text-muted">8-45 latin</small>
+<input name="login" class="form-control" id="exampleInputEmail1" aria-describedby="loginHelp" placeholder='<fmt:message key="page.login"/>' required>
 </div>
 
 <div class="col-md-2 offset-5">
 <label for="inputPassword"><fmt:message key="page.password"/></label>
-<input type="password" name="password" class="form-control" id="inputPassword" placeholder='<fmt:message key="page.password"/>'>
+<input type="password" name="password" class="form-control" id="inputPassword" placeholder='<fmt:message key="page.password"/>' required>
 </div><br>
 
 <div class="col-md-2 offset-5">

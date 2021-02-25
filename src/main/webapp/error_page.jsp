@@ -26,9 +26,9 @@
 
 
 <div class="container">
-<c:if test="${not empty errorMessage and empty exception and empty code}">
+<c:if test="${not empty errorMessage}">
 <div class="row justify-content-center">
-<h1>${errorMessage}</h1>
+<h1 class="text-danger">${errorMessage}</h1>
 </div>
 </c:if>
 </div>

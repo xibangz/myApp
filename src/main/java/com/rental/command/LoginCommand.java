@@ -37,7 +37,6 @@ public class LoginCommand extends Command {
             return Path.ERROR_PAGE;
         } else {
             setUser(user, session);
-            System.out.println(req.getParameter("localeName"));
             setLocale(req.getParameter("localeName"), session);
         }
 

@@ -11,23 +11,24 @@
 <c:if test="${empty user}">
 <div class="col-md-2 offset-5">
     <label for="Login"><fmt:message key="page.login"/></label>
-    <input name="login" class="form-control" id="exampleInputEmail1" aria-describedby="loginHelp" placeholder='<fmt:message key="page.login"/>'>
-    <small id="loginHelp" class="form-text text-muted">8-45 latin</small>
-  </div>
-  <div class="col-md-2 offset-5">
-   <label for="inputPassword"><fmt:message key="page.password"/></label>
-      <input type="password" name="password" class="form-control" id="inputPassword" placeholder='<fmt:message key="page.password"/>'>
+    <input name="login" class="form-control"  placeholder='<fmt:message key="page.login"/>' required pattern="\w{5,45}">
+    <small class="form-text text-muted">5-45 (latin, 0-9)</small>
+   </div><br>
+   <div class="col-md-2 offset-5">
+   <label for="Password"><fmt:message key="page.password"/></label>
+     <input type="password" name="password" class="form-control"  placeholder='<fmt:message key="page.password"/>' required pattern="\w{5,45}">
+     <small class="form-text text-muted">5-45 (latin, 0-9)</small>
 </div>
 <br>
 <div class="col-md-2 offset-5">
    <label for="inputPassport"><fmt:message key="page.passport"/></label>
-      <input  name="passport" class="form-control"   placeholder='<fmt:message key="page.optional"/>'>
+      <input  name="passport" class="form-control"   placeholder='<fmt:message key="page.optional"/>' pattern="([A-Z]{2}[0-9]{6})">
 </div>
 </c:if>
 <c:if test="${not empty user}">
 <div class="col-md-2 offset-5">
    <label for="inputPassport"><fmt:message key="page.passport"/></label>
-      <input  name="passport" class="form-control"   placeholder='<fmt:message key="page.optional"/>' required>
+      <input  name="passport" class="form-control"   placeholder='<fmt:message key="page.optional"/>' required pattern="([A-Z]{2}[0-9]{6})">
 </div>
 </c:if>
 <br>

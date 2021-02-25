@@ -1,13 +1,13 @@
 package com.rental.exception;
 
-public class DbException extends Exception{
+public class DBException extends Exception{
     private static final long serialVersionUID = 4316833880959171415L;
 
-    public DbException(String message, Throwable cause) {
+    public DBException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public DbException(String message) {
+    public DBException(String message) {
         super(message);
     }
 }

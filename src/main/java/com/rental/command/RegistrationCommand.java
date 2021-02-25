@@ -5,12 +5,14 @@ import com.rental.bean.Role;
 import com.rental.bean.User;
 import com.rental.service.UserService;
 
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import static com.rental.dao.Fields.*;
 
@@ -23,20 +25,53 @@ public class RegistrationCommand extends Command {
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         HttpSession session = req.getSession();
         userServ = (UserService) req.getServletContext().getAttribute("userServ");
-
-        String errorMessage = null;
-
         User user = (User) session.getAttribute("user");
+        String errorMessage = "errorMessage";
+        String passport;
         if (user == null) {
+            if (userServ.findUserByLogin(req.getParameter(USER_LOGIN)) != null) {
+                session.setAttribute(errorMessage, "Login already exists.");
+                return Path.ERROR_PAGE;
+            }
+            if (!validateLoginPassword(req)) {
+                session.setAttribute(errorMessage, "Incorrect value of Login/Password.");
+                return Path.ERROR_PAGE;
+            }
+            passport = req.getParameter(USER_PASSPORT);
+            if (passport != null && !passport.isEmpty() && !validatePassport(passport)) {
+                session.setAttribute(errorMessage, "Incorrect value of Passport.");
+                return Path.ERROR_PAGE;
+
+            }
             user = insertUser(session, req);
             setSession(user, req.getParameter("localeName"), session);
             return Path.HOME_PAGE;
         } else {
+            passport = req.getParameter(USER_PASSPORT);
+            if (passport == null || passport.isEmpty() || !validatePassport(passport)) {
+                session.setAttribute(errorMessage, "Incorrect value of Passport.");
+                return Path.ERROR_PAGE;
+            }
             updateUserPassport(user, req);
             return session.getAttribute("order") != null
                     ? Path.USER_ORDER_CONFIRM
                     : Path.HOME_PAGE;
         }
+    }
+
+    private boolean validateLoginPassword(HttpServletRequest req) {
+        String login = req.getParameter(USER_LOGIN);
+        String password = req.getParameter(USER_PASSWORD);
+        if (login == null || login.isEmpty() || password == null || password.isEmpty()) {
+            return false;
+        }
+        return Pattern.matches("\\w{5,45}", login)
+                && Pattern.matches("\\w{5,45}", password);
+    }
+
+
+    private boolean validatePassport(String passport) {
+        return Pattern.matches("([A-Z]{2}[0-9]{6})", passport);
     }
 
     private void setLocale(String locale, HttpSession session) {
