@@ -8,16 +8,16 @@
 
      <section class="jumbotron text-center">
         <div class="container">
-          <h1 class="jumbotron-heading">Car rental</h1>
-          <p class="lead text-muted">Your ad could be here .</p>
+          <h1 class="jumbotron-heading"><fmt:message key="index.main"/></h1>
+          <p class="lead text-muted"><fmt:message key="index.desc"/></p>
           <p>
           <c:if test="${empty user}">
           <div class="row ">
             <div class="offset-4">&ensp;&ensp;
-            <a href="login.jsp" class="btn btn-success btn-lg active" role="button" aria-pressed="true">Sing in</a>
+            <a href="login.jsp" class="btn btn-success btn-lg active" role="button" aria-pressed="true"><fmt:message key="page.sign_in"/></a>
             </div>
             <div class="offset-1">
-            <a href="registration.jsp" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Registration</a>
+            <a href="registration.jsp" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><fmt:message key="page.registration"/></a>
             </div>
             </div>
             </c:if>
@@ -25,7 +25,6 @@
         </div>
       </section>
 </form>
-
 
       <div class="album py-5 ">
         <div class="container">
@@ -42,8 +41,8 @@
                 <div class="card-body">
 
                   <div class="d-flex justify-content-between align-items-center">
-                  <h3>Rent this car</h3>
-                  <small class="text-muted">Best offer</small>
+                  <h3><fmt:message key="index.rent_this"/></h3>
+                  <small class="text-muted"><fmt:message key="index.best_offer"/></small>
                      </div>
                 </div>
                 </a>
@@ -62,8 +61,8 @@
 
                   <div class="d-flex justify-content-between align-items-center">
 
-                      <h3>Rent this car</h3>
-                      <small class="text-muted">Best offer</small>
+                  <h3><fmt:message key="index.rent_this"/></h3>
+                  <small class="text-muted"><fmt:message key="index.best_offer"/></small>
 
                   </div>
                 </div>
@@ -82,10 +81,8 @@
                 <div class="card-body">
 
                   <div class="d-flex justify-content-between align-items-center">
-
-                      <h3>Rent this car</h3>
-
-                   <small class="text-muted">Best offer</small>
+                  <h3><fmt:message key="index.rent_this"/></h3>
+                  <small class="text-muted"><fmt:message key="index.best_offer"/></small>
                   </div>
                 </div>
                 </a>
@@ -104,10 +101,8 @@
                 <div class="card-body">
 
                   <div class="d-flex justify-content-between align-items-center">
-
-                       <h3>Rent this car</h3>
-
-                   <small class="text-muted">Best offer</small>
+                  <h3><fmt:message key="index.rent_this"/></h3>
+                  <small class="text-muted"><fmt:message key="index.best_offer"/></small>
                   </div>
                 </div>
                 </a>
@@ -125,10 +120,8 @@
                 <div class="card-body">
 
                   <div class="d-flex justify-content-between align-items-center">
-
-                      <h3>Rent this car</h3>
-
-                    <small class="text-muted">Best offer</small>
+                  <h3><fmt:message key="index.rent_this"/></h3>
+                  <small class="text-muted"><fmt:message key="index.best_offer"/></small>
                   </div>
                 </div>
                 </a>
@@ -146,10 +139,8 @@
                 <div class="card-body">
 
                   <div class="d-flex justify-content-between align-items-center">
-
-                      <h3>Rent this car</h3>
-
-                    <small class="text-muted">Best offer</small>
+                  <h3><fmt:message key="index.rent_this"/></h3>
+                  <small class="text-muted"><fmt:message key="index.best_offer"/></small>
                   </div>
                 </div>
                 </a>

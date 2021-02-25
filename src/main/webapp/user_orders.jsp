@@ -12,13 +12,13 @@
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">Car</th>
-      <th scope="col">Rental from</th>
-      <th scope="col">Rental up to</th>
-      <th scope="col">Number of cars</th>
-      <th scope="col">Number of drivers</th>
-      <th scope="col">Order status</th>
-      <th scope="col">Total sum</th>
+      <th scope="col"><fmt:message key="orders.car_value"/></th>
+      <th scope="col"><fmt:message key="orders.rental_from"/></th>
+      <th scope="col"><fmt:message key="orders.rental_up"/></th>
+      <th scope="col"><fmt:message key="products.numb_of_cars"/></th>
+      <th scope="col"><fmt:message key="products.numb_of_drivers"/></th>
+      <th scope="col"><fmt:message key="orders.status"/></th>
+      <th scope="col"><fmt:message key="orders.sum"/></th>
     </tr>
   </thead>
 
@@ -56,7 +56,7 @@
       </c:if>
 
       <td><button type="submit" name="status" class="btn btn-md btn-success sm-1 text-white" value="${k}"
-      <c:if test="${item.orderStatusId!=2}">disabled</c:if>>Pay in</button></td>
+      <c:if test="${item.orderStatusId!=2}">disabled</c:if>><fmt:message key="orders.pay_in"/></button></td>
 
       <c:set var="k" value="${k+1}"/>
     </tr>

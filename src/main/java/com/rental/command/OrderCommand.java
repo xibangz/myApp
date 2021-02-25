@@ -82,13 +82,13 @@ public class OrderCommand extends Command {
     private void insertTotal(OrderTotal total, HttpSession session) {
         Connection con = null;
         try {
-            con= DBManager.getInstance().startTransaction();
-            orderServ.insertOrder(total.getOrder(),con);
-            orderTotalServ.insertOrderTotal(con,total);
+            con = DBManager.getInstance().startTransaction();
+            orderServ.insertOrder(total.getOrder(), con);
+            orderTotalServ.insertOrderTotal(con, total);
             DBManager.getInstance().commitTransaction(con);
         } catch (SQLException e) {
             DBManager.getInstance().rollbackTransaction(con);
-        }finally {
+        } finally {
             sessionRemove(session);
             DBManager.getInstance().close(con);
         }
@@ -245,7 +245,7 @@ public class OrderCommand extends Command {
                 content.setRentToInfo("'End' date must be between current date and current date + 3 months!");
                 return;
             }
-            if (!dateCheck(order.getRentFrom(), date)) {
+            if (order.getRentFrom() != null && !dateCheck(order.getRentFrom(), date)) {
                 content.setRentToInfo("'End' date can't be bigger than 'from' date!");
                 return;
             }
@@ -273,8 +273,7 @@ public class OrderCommand extends Command {
         Date upperDate = Date.valueOf(LocalDate.now().plusMonths(3));
         long diff = value.getTime() - currDate.getTime();
         long diff2 = upperDate.getTime() - value.getTime();
-        return diff > 0
-                && diff2 >= 0;
+        return diff >= 0 && diff2 >= 0;
     }
 
     private boolean dateCheck(Date from, Date to) {

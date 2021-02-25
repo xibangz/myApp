@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 
 import static com.rental.dao.Fields.*;
@@ -16,48 +17,54 @@ import static com.rental.dao.Fields.*;
 public class RegistrationCommand extends Command {
     private static final long serialVersionUID = 8619618090340562011L;
 
+    private UserService userServ;
+
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         HttpSession session = req.getSession();
-        UserService userServ = (UserService) req.getServletContext().getAttribute("userServ");
+        userServ = (UserService) req.getServletContext().getAttribute("userServ");
 
         String errorMessage = null;
-        String forward = Path.ERROR_PAGE;
 
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            user = new User();
-            user.setLogin(req.getParameter(USER_LOGIN));
-            user.setPassword(req.getParameter(USER_PASSWORD));
-            user.setPassport(req.getParameter(USER_PASSPORT));
-            user.setRoleId(USER_CLIENT_ROLE);
-            userServ.insertUser(user);
-            Role userRole = Role.getRole(user);
-            session.setAttribute("userRole", userRole);
-            session.setMaxInactiveInterval(1000);
-            forward = Path.HOME_PAGE;
+            user = insertUser(session, req);
+            setSession(user, req.getParameter("localeName"), session);
+            return Path.HOME_PAGE;
         } else {
-            user.setPassport(req.getParameter("passport"));
-            user.setBlocked(false);
-            userServ.updateUserPassport(user);
-            if (session.getAttribute("order") != null) {
-                forward = Path.USER_ORDER_CONFIRM;
-            } else {
-                forward = Path.HOME_PAGE;
-            }
+            updateUserPassport(user, req);
+            return session.getAttribute("order") != null
+                    ? Path.USER_ORDER_CONFIRM
+                    : Path.HOME_PAGE;
         }
+    }
+
+    private void setLocale(String locale, HttpSession session) {
+        if (locale != null && !locale.isEmpty()) {
+            Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", locale);
+            session.setAttribute("defaultLocale", locale);
+        }
+    }
+
+    private void setSession(User user, String locale, HttpSession session) {
         session.setAttribute("user", user);
+        setLocale(locale, session);
+        session.setAttribute("userRole", Role.getRole(user));
+        session.setMaxInactiveInterval(1000);
+    }
 
+    private User insertUser(HttpSession session, HttpServletRequest req) {
+        User user = new User();
+        user.setLogin(req.getParameter(USER_LOGIN));
+        user.setPassword(req.getParameter(USER_PASSWORD));
+        user.setPassport(req.getParameter(USER_PASSPORT));
+        user.setRoleId(USER_CLIENT_ROLE);
+        userServ.insertUser(user);
+        return user;
+    }
 
-
-            /*String userLocaleName = user.getLocaleName();
-            log.trace("userLocalName --> " + userLocaleName);
-
-            if (userLocaleName != null && !userLocaleName.isEmpty()) {
-                Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", userLocaleName);
-                session.setAttribute("defaultLocale", userLocaleName);
-            }
-        }*/
-        return forward;
+    private void updateUserPassport(User user, HttpServletRequest req) {
+        user.setPassport(req.getParameter("passport"));
+        userServ.updateUserPassport(user);
     }
 }

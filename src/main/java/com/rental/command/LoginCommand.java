@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 
 public class LoginCommand extends Command {
@@ -26,41 +27,33 @@ public class LoginCommand extends Command {
         String login = req.getParameter(USER_LOGIN);
         String password = req.getParameter(USER_PASSWORD);
 
-        String errorMessage = null;
-
         if (login == null || password == null || login.isEmpty() || password.isEmpty()) {
-            errorMessage = "Login/password cannot be empty";
-            req.setAttribute("errorMessage", errorMessage);
+            req.setAttribute("errorMessage", "Login/password cannot be empty");
             return Path.ERROR_PAGE;
         }
-
         User user = userServ.findUserByLogin(login);
         if (user == null || !password.equals(user.getPassword())) {
-            errorMessage = "Cannot find user with such login/password";
-            req.setAttribute("errorMessage", errorMessage);
+            req.setAttribute("errorMessage", "Cannot find user with such login/password");
             return Path.ERROR_PAGE;
         } else {
-            Role userRole = Role.getRole(user);
-            /*if (userRole == Role.ADMIN)
-                forward = Path.COMMAND_LIST_ORDERS;
-
-            if (userRole == Role.CLIENT)
-                forward = Path.COMMAND_LIST_MENU;*/
-
-            session.setAttribute("user", user);
-            session.setAttribute("userRole", userRole);
-            session.setMaxInactiveInterval(1000);
-
-            /*String userLocaleName = user.getLocaleName();
-            log.trace("userLocalName --> " + userLocaleName);
-
-            if (userLocaleName != null && !userLocaleName.isEmpty()) {
-                Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", userLocaleName);
-                session.setAttribute("defaultLocale", userLocaleName);
-            }
-        }*/
-
-            return Path.HOME_PAGE;
+            setUser(user, session);
+            System.out.println(req.getParameter("localeName"));
+            setLocale(req.getParameter("localeName"), session);
         }
+
+        return Path.HOME_PAGE;
+    }
+
+    private void setLocale(String locale, HttpSession session) {
+        if (locale != null && !locale.isEmpty()) {
+            Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", locale);
+            session.setAttribute("defaultLocale", locale);
+        }
+    }
+
+    private void setUser(User user, HttpSession session) {
+        session.setAttribute("user", user);
+        session.setAttribute("userRole", Role.getRole(user));
+        session.setMaxInactiveInterval(1000);
     }
 }

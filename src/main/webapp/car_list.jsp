@@ -13,13 +13,13 @@
 <form action="controller">
 <div class="dropleft">
   <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-   Sorter
+   <fmt:message key="product.sort"/>
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-    <c:if test="${pageContent.sort ne 'defaultSort'}"><button class="dropdown-item" type="submit" name="sort" value="defaultSort">Default</button></c:if>
-    <button <c:if test="${pageContent.sort eq 'priceLowest'}">class="dropdown-item disabled"</c:if><c:if test="${pageContent.sort ne 'priceLowest'}">class="dropdown-item"</c:if> type="submit" name="sort" value="priceLowest">Lowest Price</button>
-    <button <c:if test="${pageContent.sort eq 'priceHighest'}">class="dropdown-item disabled"</c:if><c:if test="${pageContent.sort ne 'priceHighest'}">class="dropdown-item"</c:if> type="submit" name="sort" value="priceHighest">Highest Price</button>
-    <button <c:if test="${pageContent.sort eq 'brand'}">class="dropdown-item disabled"</c:if><c:if test="${pageContent.sort ne 'brand'}">class="dropdown-item"</c:if> type="submit" name="sort" value="brand">Brand</button>
+    <c:if test="${pageContent.sort ne 'defaultSort'}"><button class="dropdown-item" type="submit" name="sort" value="defaultSort"><fmt:message key="product.sort.default"/></button></c:if>
+    <button <c:if test="${pageContent.sort eq 'priceLowest'}">class="dropdown-item disabled"</c:if><c:if test="${pageContent.sort ne 'priceLowest'}">class="dropdown-item"</c:if> type="submit" name="sort" value="priceLowest"><fmt:message key="product.sort.lowest_price"/></button>
+    <button <c:if test="${pageContent.sort eq 'priceHighest'}">class="dropdown-item disabled"</c:if><c:if test="${pageContent.sort ne 'priceHighest'}">class="dropdown-item"</c:if> type="submit" name="sort" value="priceHighest"><fmt:message key="product.sort.highest_price"/></button>
+    <button <c:if test="${pageContent.sort eq 'brand'}">class="dropdown-item disabled"</c:if><c:if test="${pageContent.sort ne 'brand'}">class="dropdown-item"</c:if> type="submit" name="sort" value="brand"><fmt:message key="product.sort.brand"/></button>
   </div>
 </div>
 <input type = "hidden" name="command" value="carsList"/>
@@ -30,11 +30,11 @@
 
 <div class="dropright">
 <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-Driver category
+<fmt:message key="product.filter.driver_cat"/>
 </button>
 <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
 <div class="text-info">
-<h7>&ensp;Driver category</h7>
+<h7>&ensp;<fmt:message key="product.filter.category"/></h7>
 </div>
 
 <c:forEach var="item" items="${pageContent.categories}">
@@ -43,7 +43,7 @@ Driver category
 <label class="form-check-label">Category '${item.name}'</label>
 </div>
 </c:forEach>
-<button type="submit" class="btn btn-warning mt-4 text-white"><i class="icon-cart-add mr-2"></i>Show</button>
+<button type="submit" class="btn btn-warning mt-4 text-white"><i class="icon-cart-add mr-2"></i><fmt:message key="page.show"/></button>
 </div>
 </div>
 
@@ -51,11 +51,11 @@ Driver category
 
 <div class="dropright">
 <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-Brand
+<fmt:message key="product.filter.brand"/>
 </button>
 <div class="dropdown-menu pre-scrollable" aria-labelledby="dropdownMenu3">
 <div class="text-info">
-<h7>&ensp;Brand</h7>
+<h7>&ensp;<fmt:message key="product.filter.brand"/></h7>
 </div>
 
 <c:forEach var="item" items="${pageContent.brands}">
@@ -64,7 +64,7 @@ Brand
   <label class="form-check-label">${item}</label>
 </div>
 </c:forEach>
-<button type="submit" class="btn btn-warning mt-4 text-white"><i class="icon-cart-add mr-2"></i>Show</button>
+<button type="submit" class="btn btn-warning mt-4 text-white"><i class="icon-cart-add mr-2"></i><fmt:message key="page.show"/></button>
 </div>
 </div>
 
@@ -73,12 +73,12 @@ Brand
 
 <div class="dropright">
 <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-Price
+<fmt:message key="product.filter.price"/>
 </button>
 <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
-<input type = "text" name="priceFromFilter" placeholder="Price from" min="0"/>
-<input type = "text" name="priceToFilter" placeholder="Price to" min="0"/>
-<button type="submit" class="btn btn-warning mt-4 text-white"><i class="icon-cart-add mr-2"></i>Show</button>
+<input type = "text" name="priceFromFilter" placeholder='<fmt:message key="product.filter.price.from"/>' min="0"/>
+<input type = "text" name="priceToFilter" placeholder='<fmt:message key="product.filter.price.to"/>' min="0"/>
+<button type="submit" class="btn btn-warning mt-4 text-white"><i class="icon-cart-add mr-2"></i><fmt:message key="page.show"/></button>
 </div>
 </div>
 
@@ -91,7 +91,7 @@ Price
 <form action="controller">
 <div class="dropright">
   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-   Products per page
+   <fmt:message key="products.per.page"/>
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
 
@@ -111,22 +111,22 @@ Price
 <car:deploy  productsPerPage="${pageContent.productsPerPage}" carListSize="${fn:length(pageContent.carsList)}">
 <car_ph:photo>"http://images.vfl.ru/ii/1613014509/51da455b/33290232.jpg"</car_ph:photo>
 <car_name:name><p class="text-info">&ensp;${pageContent.carsList[k].brand}&ensp;${pageContent.carsList[k].model}</p></car_name:name>
-<h7>&ensp;Start date</h7>
+<h7>&ensp;<fmt:message key="products.start_date"/></h7>
 <input id="${pageContent.carsList[k].id}" type="date" class="form-control" name="${pageContent.carsList[k].id}rentFrom" placeholder=""/>
-<h7>&ensp;End date</h7>
+<h7>&ensp;<fmt:message key="products.end_date"/></h7>
 <br><input id="${pageContent.carsList[k].id}+1" type="date" class="form-control" name="${pageContent.carsList[k].id}rentTo" placeholder=""/>
 <div>
-<h7>&ensp;Number of drivers</h7>
-&ensp;<input type = "number" name="${pageContent.carsList[k].id}numbOfDrivers" placeholder="Number of drivers" value="0" min="0"/>
-<br><h7>&ensp;Number of cars</h7>
-&ensp;<input type = "number" name="${pageContent.carsList[k].id}numbOfCars" placeholder="Number of cars" value="1" min="1"/>
+<h7>&ensp;<fmt:message key="products.numb_of_drivers"/></h7>
+&ensp;<input type = "number" name="${pageContent.carsList[k].id}numbOfDrivers" placeholder='<fmt:message key="products.numb_of_drivers"/>' value="0" min="0"/>
+<br><h7>&ensp;<fmt:message key="products.numb_of_cars"/></h7>
+&ensp;<input type = "number" name="${pageContent.carsList[k].id}numbOfCars" placeholder='<fmt:message key="products.numb_of_cars"/>' value="1" min="1"/>
 <input type = "hidden" name="command" value="order"/>
 </div>
 <car_desc:desc></car_desc:desc>
-<car_price:price>Price:<h4>${pageContent.carsList[k].price}uah/d</h4></car_price:price><br><br><br><br><br><br>
-<c:if test="${empty user}"><a href="login.jsp" class="btn btn-success btn-lg active" role="button" aria-pressed="true">Sing in</a></c:if>
+<car_price:price><fmt:message key="products.price"/>:<h4>${pageContent.carsList[k].price}<fmt:message key="products.price.value"/></h4></car_price:price><br><br><br><br><br><br>
+<c:if test="${empty user}"><a href="login.jsp" class="btn btn-success btn-lg active" role="button" aria-pressed="true"><fmt:message key="page.sign_in"/></a></c:if>
 <c:if test="${not empty user}">
-<button type="submit" name="carTotal" class="btn btn-warning mt-4 text-white" value="${pageContent.carsList[k].id}"><i class="icon-cart-add mr-2"></i> Order</button>
+<button type="submit" name="carTotal" class="btn btn-warning mt-4 text-white" value="${pageContent.carsList[k].id}"><i class="icon-cart-add mr-2"></i><fmt:message key="page.to_order"/></button>
 </c:if>
 </div>
 <c:set var="k" value="${k+1}"/>
@@ -136,7 +136,7 @@ Price
 </div>
 </form>
 </c:if>
-<c:if test="${fn:length(pageContent.carsList)==0}"><div class="row justify-content-center"><h1 class="text-danger">NO PRODUCTS</h1></div></c:if>
+<c:if test="${fn:length(pageContent.carsList)==0}"><div class="row justify-content-center"><h1 class="text-danger"><fmt:message key="page.no_products"/></h1></div></c:if>
 
 <c:set var="k" value="${1}"/>
 <pagination:pagin countProducts="${pageContent.countOfProducts}" productsPerPage="${pageContent.productsPerPage}">

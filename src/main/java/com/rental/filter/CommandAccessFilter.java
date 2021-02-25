@@ -37,9 +37,12 @@ public class CommandAccessFilter implements Filter {
 
     private boolean accessAllowed(ServletRequest request) {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        User user = (User) httpRequest.getSession().getAttribute("user");
-        if (user.isBlocked()) {
-            return false;
+        if (httpRequest.getSession(false) != null) {
+            User user = (User) httpRequest.getSession().getAttribute("user");
+            if (user != null && user.isBlocked()) {
+                httpRequest.getSession().removeAttribute("user");
+                return false;
+            }
         }
         String commandName = request.getParameter("command");
         if (commandName == null || commandName.isEmpty())
