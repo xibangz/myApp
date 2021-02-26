@@ -8,14 +8,15 @@ import com.rental.exception.DBException;
 
 import java.io.Serializable;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 public class OrderService implements Serializable {
     private static final long serialVersionUID = -1570515444734069053L;
     private final OrderDao orderDao = new OrderDao();
 
-    public void insertOrder(Order order, Connection con) throws DBException {
-        orderDao.insertOrder(order);
+    public void insertOrder(Order order, Connection con) throws DBException, SQLException {
+        orderDao.insertOrder(con,order);
     }
 
     public List<Order> findOrdersByUser(User user) throws DBException {

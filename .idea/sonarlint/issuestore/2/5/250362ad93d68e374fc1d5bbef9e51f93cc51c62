@@ -1,5 +1,11 @@
 
+q
+java:S2095d"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(Ÿ„Ã£ýÿÿÿÿ8ƒ´‹×ý.
+l
+java:S2095J"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(¥ùÐå8ƒ´‹×ý.
+r
+java:S2095—"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(ªî¨Ïÿÿÿÿÿ8ƒ´‹×ý.
 l
 java:S2095-"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(ÒõÜã8¦í§Çù.
-T
-java:S1068"7Remove this unused "SQL_FIND_ALL_ORDERS" private field.(˜„Ãš8å³Èñû.
+q
+java:S2095~"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(Ñ™ÜŽûÿÿÿÿ8ƒ´‹×ý.

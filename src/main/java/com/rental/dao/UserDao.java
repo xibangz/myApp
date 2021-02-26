@@ -16,7 +16,7 @@ public class UserDao {
     private static final String SQL_INSERT_USER = "insert into `accounts`(login,password,passport,role_id) values(?,?,?,?);";
     private static final String SQL_FIND_USER_BY_LOGIN = "select * from `accounts` where login = ?;";
     private static final String SQL_UPDATE_USER_PASSPORT_BY_ID = "update `accounts` set passport=? where id=?;";
-    private static final String SQL_FIND_ALL_USERS = "select * from `accounts`;";
+    private static final String SQL_FIND_ALL_USERS = "select * from `accounts` where role_id!=3;";
     private static final String SQL_UPDATE_USER_BLOCKED_BY_ID = "update accounts set is_blocked=? where id=?;";
     private static final String SQL_UPDATE_USER_AMOUNT = "update accounts set amount=? where id=?;";
     private static final String SQL_FIND_ALL_USERS_CLIENTS = "select * from accounts where role_id=" + USER_CLIENT_ROLE + ";";
@@ -36,7 +36,7 @@ public class UserDao {
             prepSt.setInt(z, user.getId());
             prepSt.executeUpdate();
         } catch (SQLException e) {
-            throw new DBException("Can't update User's amount!",e);
+            throw new DBException("Can't update User's amount!", e);
         } finally {
             dbManager.close(prepSt);
         }
@@ -48,7 +48,7 @@ public class UserDao {
             con = dbManager.getConnection();
             insertUser(con, user);
         } catch (SQLException e) {
-            throw new DBException("Can't insert User!",e);
+            throw new DBException("Can't insert User!", e);
         } finally {
             dbManager.close(con);
         }
@@ -61,7 +61,7 @@ public class UserDao {
         prepSt.setString(z++, user.getPassword());
         prepSt.setString(z++, user.getPassport());
         prepSt.setInt(z, user.getRoleId());
-        if (prepSt.executeUpdate() > 1) {
+        if (prepSt.executeUpdate() > 0) {
             getGeneratedId(prepSt, user);
         }
         prepSt.close();
@@ -89,7 +89,7 @@ public class UserDao {
                 user = mapUser(rs);
             }
         } catch (SQLException e) {
-            throw new DBException("Can't find User by login!",e);
+            throw new DBException("Can't find User by login!", e);
         } finally {
             dbManager.close(rs);
             dbManager.close(prepSt);
@@ -111,7 +111,7 @@ public class UserDao {
                 users.add(mapUser(rs));
             }
         } catch (SQLException e) {
-            throw new DBException("Can't find all Users!",e);
+            throw new DBException("Can't find all Users!", e);
         } finally {
             dbManager.close(rs);
             dbManager.close(st);
@@ -133,7 +133,7 @@ public class UserDao {
                 users.add(mapUser(rs));
             }
         } catch (SQLException e) {
-            throw new DBException("Can't find all Clients!",e);
+            throw new DBException("Can't find all Clients!", e);
         } finally {
             dbManager.close(rs);
             dbManager.close(st);
@@ -156,7 +156,7 @@ public class UserDao {
                 user = mapUser(rs);
             }
         } catch (SQLException e) {
-            throw new DBException("Can't find User by ID!",e);
+            throw new DBException("Can't find User by ID!", e);
         } finally {
             dbManager.close(rs);
             dbManager.close(prepSt);
@@ -176,7 +176,7 @@ public class UserDao {
             prepSt.setInt(z, user.getId());
             prepSt.executeUpdate();
         } catch (SQLException e) {
-            throw new DBException("Can't update User's passport!",e);
+            throw new DBException("Can't update User's passport!", e);
         } finally {
             dbManager.close(prepSt);
             dbManager.close(con);
@@ -194,7 +194,7 @@ public class UserDao {
             prepSt.setInt(z, user.getId());
             prepSt.executeUpdate();
         } catch (SQLException e) {
-            throw new DBException("Can't update User's block!",e);
+            throw new DBException("Can't update User's block!", e);
         } finally {
             dbManager.close(prepSt);
             dbManager.close(con);

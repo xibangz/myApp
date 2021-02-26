@@ -89,8 +89,6 @@ P
  src/main/webapp/registration.jsp,d\d\dd51f7041d5a8d7bb17c79a85099a350e198ae09
 N
 src/main/webapp/management.jsp,3\c\3cd8694ba4da1d6d7f65b069d2303578d02b993a
-J
-src/main/webapp/thanks.jsp,e\2\e28a8121a7989f3236348a5b6efadaf335ff9c6c
 b
 2src/main/java/com/rental/command/OrderCommand.java,c\d\cd85cd61c7f6129494a61aeae3b4a51a7ad8b3fe
 g
@@ -175,11 +173,23 @@ c
 3src/main/java/com/rental/exception/DbException.java,1\2\120a74d8fa8653316c1c99261758931930196624
 h
 8src/main/java/com/rental/filter/CommandAccessFilter.java,f\d\fd26730de0af24e7b97f532ff8f793c960a2a625
-U
-%src/main/java/resources_en.properties,5\0\50742ee90162c18f5ffc8051787e49ad7baf552a
-U
-%src/main/java/resources_ru.properties,2\c\2cba78b47fbc421b6db97410237ec31b2026c7d5
 h
 8src/main/java/com/rental/command/ManageUsersCommand.java,2\a\2a63b26ab6645d989a2962b581bca282afc89a34
 P
  src/main/webapp/manage_users.jsp,0\3\0381480137765ab32f957eaa82e16a908706d229
+W
+'src/main/resources/resources.properties,8\e\8e08a09b69df893cdc0f98783b3b6b063b3deefc
+Z
+*src/main/resources/resources_en.properties,5\d\5d29831975e82fd03400e84753eff5ad65339351
+Z
+*src/main/resources/resources_ru.properties,d\1\d10eecca333cbec196e78314519148f9a8ded008
+S
+#target/classes/resources.properties,8\9\895dcbd77ea3db4371d9be7dfc5366fccd40ec32
+V
+&target/classes/resources_en.properties,c\9\c926fee1fdc776f0f143390d3fb5d3476dd7144f
+V
+&target/classes/resources_ru.properties,0\a\0ac8c21b4f227d8522f3d268535d47bdb6b884c2
+c
+3src/main/java/com/rental/exception/DBException.java,2\c\2cadd2cea133276dcb3627cc9977eea1c3ee3224
+m
+=src/test/java/com/rental/command/RegistrationCommandTest.java,3\1\315c953a3e97142feded7d79b0d326bda1cf31f4

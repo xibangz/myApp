@@ -56,6 +56,6 @@ public class AdministrationCommand extends Command {
         carTotalServ = (CarTotalService) context.getAttribute("carTotalServ");
         carServ = (CarService) context.getAttribute("carServ");
         driverServ = (DriverService) context.getAttribute("driverServ");
-        userServ = (UserService) context.getAttribute("usrServ");
+        userServ = (UserService) context.getAttribute("userServ");
     }
 }

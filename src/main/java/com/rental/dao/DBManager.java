@@ -1,7 +1,6 @@
 package com.rental.dao;
 
 import com.rental.exception.DBException;
-
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;

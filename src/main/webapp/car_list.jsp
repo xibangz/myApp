@@ -109,21 +109,21 @@
 <div class="container-fluid">
 <c:set var="k" value="0"/>
 <car:deploy  productsPerPage="${pageContent.productsPerPage}" carListSize="${fn:length(pageContent.carsList)}">
-<car_ph:photo>"http://images.vfl.ru/ii/1613014509/51da455b/33290232.jpg"</car_ph:photo>
+<car_ph:photo>"${pageContent.carsList[k].photo}"</car_ph:photo>
 <car_name:name><p class="text-info">&ensp;${pageContent.carsList[k].brand}&ensp;${pageContent.carsList[k].model}</p></car_name:name>
-<h7>&ensp;<fmt:message key="products.start_date"/></h7>
+<h7 class="text font-weight-bold">&ensp;<fmt:message key="products.start_date"/></h7>
 <input id="${pageContent.carsList[k].id}" type="date" class="form-control" name="${pageContent.carsList[k].id}rentFrom" placeholder=""/>
-<h7>&ensp;<fmt:message key="products.end_date"/></h7>
+<h7 class="text font-weight-bold">&ensp;<fmt:message key="products.end_date"/></h7>
 <br><input id="${pageContent.carsList[k].id}+1" type="date" class="form-control" name="${pageContent.carsList[k].id}rentTo" placeholder=""/>
 <div>
-<h7>&ensp;<fmt:message key="products.numb_of_drivers"/></h7>
+<h7 class="text font-weight-bold">&ensp;<fmt:message key="products.numb_of_drivers"/></h7>
 &ensp;<input type = "number" name="${pageContent.carsList[k].id}numbOfDrivers" placeholder='<fmt:message key="products.numb_of_drivers"/>' value="0" min="0"/>
-<br><h7>&ensp;<fmt:message key="products.numb_of_cars"/></h7>
+<br><h7 class="text font-weight-bold">&ensp;<fmt:message key="products.numb_of_cars"/></h7>
 &ensp;<input type = "number" name="${pageContent.carsList[k].id}numbOfCars" placeholder='<fmt:message key="products.numb_of_cars"/>' value="1" min="1"/>
 <input type = "hidden" name="command" value="order"/>
 </div>
 <car_desc:desc></car_desc:desc>
-<car_price:price><fmt:message key="products.price"/>:<h4>${pageContent.carsList[k].price}<fmt:message key="products.price.value"/></h4></car_price:price><br><br><br><br><br><br>
+<car_price:price><p class="text-success"><fmt:message key="products.price"/>:</p><h4>${pageContent.carsList[k].price} <fmt:message key="products.price.value"/></h4></car_price:price><br><br><br><br><br><br>
 <c:if test="${empty user}"><a href="login.jsp" class="btn btn-success btn-lg active" role="button" aria-pressed="true"><fmt:message key="page.sign_in"/></a></c:if>
 <c:if test="${not empty user}">
 <button type="submit" name="carTotal" class="btn btn-warning mt-4 text-white" value="${pageContent.carsList[k].id}"><i class="icon-cart-add mr-2"></i><fmt:message key="page.to_order"/></button>

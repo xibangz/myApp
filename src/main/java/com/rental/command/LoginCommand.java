@@ -8,7 +8,6 @@ import com.rental.service.UserService;
 
 import static com.rental.dao.Fields.*;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

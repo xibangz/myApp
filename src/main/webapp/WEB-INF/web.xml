@@ -50,11 +50,11 @@
     </init-param>
     <init-param>
       <param-name>common</param-name>
-      <param-value>logout noCommand carsList order userOrders</param-value>
+      <param-value>noCommand order userOrders</param-value>
     </init-param>
     <init-param>
       <param-name>out-of-control</param-name>
-      <param-value>login registration</param-value>
+      <param-value>login registration carsList logout</param-value>
     </init-param>
   </filter>
 

@@ -15,19 +15,19 @@ public class CarTotalService implements Serializable {
     private final DriverCategoryService driverCatService = new DriverCategoryService();
 
     public void insertCarTotal(CarTotal total) throws DBException {
-         carTotalDao.insertCarTotal(total);
+        carTotalDao.insertCarTotal(total);
     }
 
     public void deleteCarTotal(int id) throws DBException {
-         carTotalDao.deleteCarTotal(id);
+        carTotalDao.deleteCarTotal(id);
     }
 
     public void updateCarTotal(CarTotal total) throws DBException {
-         carTotalDao.updateCarTotal(total);
+        carTotalDao.updateCarTotal(total);
     }
 
     public void updateQuantity(int id, boolean positiveNumb, Connection con) throws DBException {
-        carTotalDao.updateQuantity(id, positiveNumb,con);
+        carTotalDao.updateQuantity(id, positiveNumb, con);
     }
 
     public List<CarTotal> findAllCars() throws DBException {

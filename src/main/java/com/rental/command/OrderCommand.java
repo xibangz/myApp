@@ -85,7 +85,7 @@ public class OrderCommand extends Command {
     }
 
     private void insertTotal(OrderTotal total, HttpSession session) throws DBException {
-        Connection con = null;
+        Connection con=null;
         try {
             con = DBManager.getInstance().startTransaction();
             orderServ.insertOrder(total.getOrder(), con);
@@ -124,6 +124,7 @@ public class OrderCommand extends Command {
         String numbOfCarsValue = req.getParameter("numbOfCars");
         String numbOfDriversValue = req.getParameter("numbOfDrivers");
         User clientValue = (User) req.getSession().getAttribute("user");
+
         rentFromCheck(rentFromValue, order, content);
         rentToCheck(rentToValue, order, content);
         numbOfCarsCheck(numbOfCarsValue, order, order.getCarTotal().getId(), content);
@@ -177,7 +178,6 @@ public class OrderCommand extends Command {
 
     private void numbOfDriversCheck(String value, Order order, OrderPageInfoContent content) throws DBException {
         if (value == null || value.isEmpty()) {
-            content.setNumbOfDriversInfo("Number of drivers can't be empty!");
             return;
         }
         int numb = Integer.parseInt(value);

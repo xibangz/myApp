@@ -25,7 +25,7 @@ public class AdminCarsCommand extends Command {
 
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException{
         initServices(req);
 
 
@@ -38,7 +38,7 @@ public class AdminCarsCommand extends Command {
             deleteCarTotal(req.getParameter("deleteCarTotal"));
             deleteCar(req.getParameter("deleteCar"));
         }catch (DBException e){
-            req.getSession().setAttribute("errorMessage",e.getCause());
+            req.getSession().setAttribute("errorMessage",e.getMessage());
             return Path.ERROR_PAGE;
         }
 

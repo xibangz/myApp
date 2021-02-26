@@ -23,6 +23,7 @@
 <div class="col-md-2 offset-5">
    <label for="inputPassport"><fmt:message key="page.passport"/></label>
       <input  name="passport" class="form-control"   placeholder='<fmt:message key="page.optional"/>' pattern="([A-Z]{2}[0-9]{6})">
+      <small class="form-text text-muted">Example - AA111111</small>
 </div>
 </c:if>
 <c:if test="${not empty user}">

@@ -15,13 +15,13 @@
 <div class="container">
 <c:if test="${not empty code}">
 <div class="row justify-content-center">
-<h1>Error code: ${code}</h1>
+<h1 class="text-danger">Error code: ${code}</h1>
 </div>
 </c:if>
 				
 <c:if test="${not empty message}">
 <div class="row justify-content-center">
-<h1>Message: ${message}</h1>
+<h1 class="text-danger">Message: ${message}</h1>
 </div>
 </c:if>
 
