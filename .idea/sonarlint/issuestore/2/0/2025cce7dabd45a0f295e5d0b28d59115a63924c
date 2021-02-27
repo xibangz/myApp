@@ -1,5 +1,5 @@
 
-G
-java:S1948"*Make "orderDao" transient or serializable.(│ЭЁж8¤═сп¤.
 Ц
 java:S1130"yRemove the declaration of thrown exception 'com.rental.exception.DBException', as it cannot be thrown from method's body.(√э╖Ы8Л┐е╫¤.
+G
+java:S1948"*Make "orderDao" transient or serializable.(│ЭЁж8¤═сп¤.

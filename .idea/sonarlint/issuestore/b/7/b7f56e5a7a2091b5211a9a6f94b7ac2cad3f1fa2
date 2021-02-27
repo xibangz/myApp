@@ -1,6 +1,6 @@
 
-jWeb:DoctypePresenceCheck
-":Insert a <!DOCTYPE> declaration to before this <html> tag.(œ÷Ãûÿÿÿÿ8âÖËöù.
-OWeb:BoldAndItalicTagsCheck("Replace this <i> tag by <em>.(©®áşÿÿÿÿ8×ñÉöù.
 a	Web:S5254
 "@Add "lang" and/or "xml:lang" attributes to this "<html>" element(œ÷Ãûÿÿÿÿ8âÖËöù.
+OWeb:BoldAndItalicTagsCheck("Replace this <i> tag by <em>.(©®áşÿÿÿÿ8×ñÉöù.
+jWeb:DoctypePresenceCheck
+":Insert a <!DOCTYPE> declaration to before this <html> tag.(œ÷Ãûÿÿÿÿ8âÖËöù.

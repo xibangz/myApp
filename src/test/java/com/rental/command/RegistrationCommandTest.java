@@ -85,7 +85,7 @@ public class RegistrationCommandTest extends Mockito {
         when(session.getAttribute("user")).thenReturn(user);
         when(session.getAttribute("order")).thenReturn(null);
         when(req.getParameter("passport")).thenReturn("MM123456");
-        assertEquals(Path.HOME_PAGE,registrationCommand.execute(req, resp));
+        assertEquals(Path.HOME_PAGE, registrationCommand.execute(req, resp));
     }
 
     public void mock() {

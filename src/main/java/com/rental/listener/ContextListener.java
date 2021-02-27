@@ -22,6 +22,8 @@ public class ContextListener implements ServletContextListener {
         initCommandContainer();
         initLog4J(context);
         initI18N(context);
+        UserService userServ = (UserService) context.getAttribute("userServ");
+        context.setAttribute("banned",userServ.findAllBannedUsers());
         context.setAttribute("orderStatus", OrderStatus.values());
         context.setAttribute("role", Role.values());
     }

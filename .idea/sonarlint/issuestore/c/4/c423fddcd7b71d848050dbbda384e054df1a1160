@@ -1,5 +1,0 @@
-
-–
-java:S1130b"yRemove the declaration of thrown exception 'com.rental.exception.DBException', as it cannot be thrown from method's body.(ÿ£¯¤8ÅòØÍý.
-›
-java:S11302"yRemove the declaration of thrown exception 'com.rental.exception.DBException', as it cannot be thrown from method's body.(Ì’¨ãøÿÿÿÿ8óÓÙÍý.

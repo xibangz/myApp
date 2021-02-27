@@ -20,6 +20,7 @@ public class UserDao {
     private static final String SQL_UPDATE_USER_BLOCKED_BY_ID = "update accounts set is_blocked=? where id=?;";
     private static final String SQL_UPDATE_USER_AMOUNT = "update accounts set amount=? where id=?;";
     private static final String SQL_FIND_ALL_USERS_CLIENTS = "select * from accounts where role_id=" + USER_CLIENT_ROLE + ";";
+    private static final String SQL_FIND_ALL_BANNED_USERS = "select * from accounts where is_blocked=true;";
     private final DBManager dbManager;
 
     public UserDao() {
@@ -107,6 +108,28 @@ public class UserDao {
             con = dbManager.getConnection();
             st = con.createStatement();
             rs = st.executeQuery(SQL_FIND_ALL_USERS);
+            while (rs.next()) {
+                users.add(mapUser(rs));
+            }
+        } catch (SQLException e) {
+            throw new DBException("Can't find all Users!", e);
+        } finally {
+            dbManager.close(rs);
+            dbManager.close(st);
+            dbManager.close(con);
+        }
+        return users;
+    }
+
+    public List<User> findAllBannedUsers() throws DBException {
+        List<User> users = new ArrayList<>();
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+        try {
+            con = dbManager.getConnection();
+            st = con.createStatement();
+            rs = st.executeQuery(SQL_FIND_ALL_BANNED_USERS);
             while (rs.next()) {
                 users.add(mapUser(rs));
             }

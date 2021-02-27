@@ -6,6 +6,7 @@ import com.rental.exception.DBException;
 
 import java.io.Serializable;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 public class CarService implements Serializable {
@@ -16,8 +17,8 @@ public class CarService implements Serializable {
         return carDao.findAllCars();
     }
 
-    public void insertCar(Car car, Connection con) throws DBException {
-        carDao.insertCar(car);
+    public void insertCar(Car car, Connection con) throws SQLException{
+        carDao.insertCar(car,con);
     }
 
     public void deleteCar(int id, Connection con) throws DBException {

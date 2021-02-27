@@ -62,7 +62,7 @@ public class CarDao {
         Connection con = null;
         try {
             con = dbManager.getConnection();
-            insertCar(con, car);
+            insertCar(car,con);
         } catch (SQLException e) {
             throw new DBException("Can't insert Car!",e);
         } finally {
@@ -70,14 +70,14 @@ public class CarDao {
         }
     }
 
-    public void insertCar(Connection con, Car car) throws SQLException {
+    public void insertCar(Car car,Connection con) throws SQLException {
         PreparedStatement prepSt = con.prepareStatement(SQL_INSERT_CAR, Statement.RETURN_GENERATED_KEYS);
         int z = 1;
         prepSt.setString(z++, car.getBrand());
         prepSt.setString(z++, car.getModel());
         prepSt.setString(z++, car.getNumbers());
         prepSt.setInt(z, car.getCarTotal());
-        if (prepSt.executeUpdate() > 1) {
+        if (prepSt.executeUpdate() > 0) {
             getGeneratedId(prepSt, car);
         }
         prepSt.close();

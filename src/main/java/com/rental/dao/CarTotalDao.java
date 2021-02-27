@@ -124,7 +124,7 @@ public class CarTotalDao {
         prepSt.setString(z++, car.getBrand());
         prepSt.setString(z++, car.getModel());
         prepSt.setInt(z, car.getDriverCat().getId());
-        if (prepSt.executeUpdate() > 1) {
+        if (prepSt.executeUpdate() > 0) {
             getGeneratedId(prepSt, car);
         }
         prepSt.close();

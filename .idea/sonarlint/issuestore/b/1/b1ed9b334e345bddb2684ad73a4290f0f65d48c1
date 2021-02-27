@@ -1,5 +1,5 @@
 
-q
-java:S2095:"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(ê¥ƒ§øÿÿÿÿ8¾¨¯Êù.
 d
 java:S2095T"GUse try-with-resources or close this "Statement" in a "finally" clause.(œïì”8½è”Òý.
+q
+java:S2095:"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(ê¥ƒ§øÿÿÿÿ8¾¨¯Êù.

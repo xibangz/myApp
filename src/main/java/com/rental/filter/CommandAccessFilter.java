@@ -37,8 +37,9 @@ public class CommandAccessFilter implements Filter {
     private boolean accessAllowed(ServletRequest request) {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         if (httpRequest.getSession(false) != null) {
+            List<User> banned = (List<User>) request.getServletContext().getAttribute("banned");
             User user = (User) httpRequest.getSession().getAttribute("user");
-            if (user != null && user.isBlocked()) {
+            if (user != null && userBanned(banned, user)) {
                 httpRequest.getSession().removeAttribute("user");
                 return false;
             }
@@ -60,6 +61,15 @@ public class CommandAccessFilter implements Filter {
 
         return accessMap.get(userRole).contains(commandName)
                 || commons.contains(commandName);
+    }
+
+    public boolean userBanned(List<User> users, User user) {
+        for (User usr : users) {
+            if (usr.getId() == user.getId()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

@@ -1,9 +1,23 @@
 
-r
-java:S2095β"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(‘Ηχδώÿÿÿÿ8„™ή•ϋ.
 q
 java:S2095x"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(Τ―Έ‰ώÿÿÿÿ8„™ή•ϋ.
-p
-java:S3776°"RRefactor this method to reduce its Cognitive Complexity from 34 to the 15 allowed.(¤σςΘ8Ρίνπϋ.
+i
+java:S2095/"GUse try-with-resources or close this "Statement" in a "finally" clause.(ν…³ώÿÿÿÿ8ηΊχνύ.
+r
+java:S2095β"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(‘Ηχδώÿÿÿÿ8„™ή•ϋ.
+l
+java:S2095…"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(μΛμv8ηΊχνύ.
+e
+java:S2095"GUse try-with-resources or close this "Statement" in a "finally" clause.(ομ”8ηΊχνύ.
+e
+java:S2095Ή"GUse try-with-resources or close this "Statement" in a "finally" clause.(ομ”8ηΊχνύ.
 S
 java:S1128	"1Remove this unused import 'java.io.Serializable'.(θγξΒÿÿÿÿÿ8 Γ¨ύ.
+i
+java:S2095E"GUse try-with-resources or close this "Statement" in a "finally" clause.(ν…³ώÿÿÿÿ8ηΊχνύ.
+i
+java:S2095["GUse try-with-resources or close this "Statement" in a "finally" clause.(ν…³ώÿÿÿÿ8ηΊχνύ.
+e
+java:S2095£"GUse try-with-resources or close this "Statement" in a "finally" clause.(ομ”8ηΊχνύ.
+p
+java:S3776°"RRefactor this method to reduce its Cognitive Complexity from 34 to the 15 allowed.(¤σςΘ8Ρίνπϋ.

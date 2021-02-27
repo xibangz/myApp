@@ -43,4 +43,12 @@ public class UserService implements Serializable {
     public void updateUserAmount(User user, Connection con) throws DBException {
         userDao.updateUserAmount(user,con);
     }
+
+    public List<User> findAllBannedUsers() {
+        try {
+            return userDao.findAllBannedUsers();
+        } catch (DBException e) {
+            return null;
+        }
+    }
 }

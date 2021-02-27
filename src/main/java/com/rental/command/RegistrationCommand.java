@@ -5,7 +5,6 @@ import com.rental.bean.Role;
 import com.rental.bean.User;
 import com.rental.exception.DBException;
 import com.rental.service.UserService;
-import lombok.extern.log4j.Log4j;
 
 
 import javax.servlet.ServletException;
@@ -18,7 +17,6 @@ import java.util.regex.Pattern;
 
 import static com.rental.dao.Fields.*;
 
-@Log4j
 public class RegistrationCommand extends Command {
     private static final long serialVersionUID = 8619618090340562011L;
 
@@ -26,63 +24,46 @@ public class RegistrationCommand extends Command {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        log.debug("Command starts");
 
         HttpSession session = req.getSession();
         userServ = (UserService) req.getServletContext().getAttribute("userServ");
         User user = (User) session.getAttribute("user");
-        log.trace("Req param 'user' = " + user);
 
         String errorMessage = "errorMessage";
         String passport;
-        String err;
+        String err=null;
         try {
             if (user == null) {
                 if (userServ.findUserByLogin(req.getParameter(USER_LOGIN)) != null) {
-                    err = "Login already exists.";
-                    log.error(errorMessage + " - " + err);
                     session.setAttribute(errorMessage, err);
                     return Path.ERROR_PAGE;
                 }
                 if (!validateLoginPassword(req)) {
-                    err = "Incorrect value of Login/Password.";
-                    log.error(errorMessage + " - " + err);
                     session.setAttribute(errorMessage, err);
                     return Path.ERROR_PAGE;
                 }
                 passport = req.getParameter(USER_PASSPORT);
-                log.trace("Req param passport = " + passport);
                 if (passport != null && !passport.isEmpty() && !validatePassport(passport)) {
-                    err = "Incorrect value of Passport.";
-                    log.error(errorMessage + " - " + err);
                     session.setAttribute(errorMessage, err);
                     return Path.ERROR_PAGE;
 
                 }
                 user = insertUser(req);
-                log.trace("Insert User to DB. User = " + user);
                 setSession(user, req.getParameter("localeName"), session);
-                log.trace("Ser session attrs: locale + " + user + ", " + Role.getRole(user));
                 return Path.HOME_PAGE;
             } else {
                 passport = req.getParameter(USER_PASSPORT);
-                log.trace("Req param passport = " + passport);
                 if (passport == null || passport.isEmpty() || !validatePassport(passport)) {
-                    err = "Incorrect value of Passport.";
-                    log.error(errorMessage + " - " + err);
                     session.setAttribute(errorMessage, err);
                     return Path.ERROR_PAGE;
                 }
                 updateUserPassport(user, req);
-                log.trace("Update User passport. User = " + user + ", pass = " + user.getPassport());
                 session.setAttribute("user", user);
-                log.trace("Set session attr: User = " + user);
                 return session.getAttribute("order") != null
                         ? Path.USER_ORDER_CONFIRM
                         : Path.HOME_PAGE;
             }
         } catch (DBException e) {
-            log.error(errorMessage + " - " + e.getMessage());
             req.getSession().setAttribute("errorMessage", e.getMessage());
             return Path.ERROR_PAGE;
         }

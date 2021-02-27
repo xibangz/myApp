@@ -108,6 +108,7 @@
 <form action="controller" method="post">
 <div class="container-fluid">
 <c:set var="k" value="0"/>
+
 <car:deploy  productsPerPage="${pageContent.productsPerPage}" carListSize="${fn:length(pageContent.carsList)}">
 <car_ph:photo>"${pageContent.carsList[k].photo}"</car_ph:photo>
 <car_name:name><p class="text-info">&ensp;${pageContent.carsList[k].brand}&ensp;${pageContent.carsList[k].model}</p></car_name:name>
@@ -131,6 +132,7 @@
 </div>
 <c:set var="k" value="${k+1}"/>
 </car:deploy>
+
 </div>
 </div>
 </div>

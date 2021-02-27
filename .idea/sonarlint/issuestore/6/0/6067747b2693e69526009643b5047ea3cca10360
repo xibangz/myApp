@@ -1,7 +1,7 @@
 
-›
-java:S11304"yRemove the declaration of thrown exception 'com.rental.exception.DBException', as it cannot be thrown from method's body.(ïÎ»Òøÿÿÿÿ8ŒßÕÍý.
-›
-java:S1130""yRemove the declaration of thrown exception 'com.rental.exception.DBException', as it cannot be thrown from method's body.(å™éÑøÿÿÿÿ8àÖÍý.
-›
-java:S1130+"yRemove the declaration of thrown exception 'com.rental.exception.DBException', as it cannot be thrown from method's body.(þ·Ìïúÿÿÿÿ8³ðÕÍý.
+`
+java:S1128">Remove this unused import 'javax.xml.ws.spi.http.HttpContext'.(ÿ¨™¢ûÿÿÿÿ8ª³«íý.
+i
+java:S1192("GDefine a constant instead of duplicating this literal "banned" 4 times.(ûÆÏ·þÿÿÿÿ8ÿ˜³íý.
+F
+java:S5413A")Verify that "remove()" is used correctly.(ó­Âß8­£ºíý.
